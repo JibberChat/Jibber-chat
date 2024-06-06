@@ -7,6 +7,8 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 
+import { Provider as JotaiProvider } from 'jotai';
+
 import MontserratBold from "@/assets/fonts/Montserrat-Bold.ttf";
 import MontserratLight from "@/assets/fonts/Montserrat-Light.ttf";
 import MontserratMedium from "@/assets/fonts/Montserrat-Medium.ttf";
@@ -39,10 +41,12 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
+      <JotaiProvider>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </JotaiProvider>
     </ThemeProvider>
   );
 }
