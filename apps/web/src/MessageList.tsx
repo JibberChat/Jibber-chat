@@ -1,5 +1,6 @@
 import React from 'react';
-import { useQuery, useSubscription, gql } from '@apollo/client';
+import { useSubscription } from '@apollo/client';
+import { gql } from './__generated__';
 
 // const GET_MESSAGES = gql`
 //   query GetMessages($roomId: String!) {
@@ -12,14 +13,14 @@ import { useQuery, useSubscription, gql } from '@apollo/client';
 //   }
 // `;
 
-const MESSAGE_ADDED = gql`
+const MESSAGE_ADDED = gql(`
   subscription OnMessageAdded {
     messageAdded {
       userId
       message
     }
   }
-`;
+`);
 
 // const MESSAGE_ADDED = gql`
 //   subscription OnMessageAdded {
@@ -38,24 +39,24 @@ const MessageList = () => {
   //   if (loading) return <p>Loading...</p>;
   //   if (error) return <p>Error :(</p>;
 
-  //   const messages = data ? data.getMessages : [];
+  const messages = [];
   const newMessage = subscriptionData ? subscriptionData.messageAdded : null;
   console.log('newMessage', newMessage);
 
-  //   if (newMessage && newMessage.roomId === roomId) {
-  //     messages.push(newMessage);
-  //   }
+  if (newMessage) {
+    messages.push(newMessage);
+  }
 
   return (
     <div>
-      {/* {messages.map(({ id, content, sender, createdAt }: any) => (
-        <div key={id}>
+      {messages.map(({ message, userId }: any, index) => (
+        <div key={index}>
           <p>
-            <strong>{sender}</strong>: {content}{' '}
-            <em>{new Date(createdAt).toLocaleTimeString()}</em>
+            <strong>{userId}</strong>: {message}{' '}
+            {/* <em>{new Date(createdAt).toLocaleTimeString()}</em> */}
           </p>
         </div>
-      ))} */}
+      ))}
     </div>
   );
 };

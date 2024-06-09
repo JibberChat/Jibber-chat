@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
-import { useMutation, gql } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import { gql } from './__generated__';
 
-const SEND_MESSAGE = gql`
+// const SEND_MESSAGE = gql(`
+//   mutation SendMessage($input: SendMessageInput!) {
+//     sendMessage(input: $input) {
+//       userId
+//       message
+//     }
+//   }
+// `);
+
+const SEND_MESSAGE = gql(`
   mutation SendMessage($input: SendMessageInput!) {
     sendMessage(input: $input) {
       userId
       message
     }
   }
-`;
+`);
 
 const SendMessage = () => {
   const [content, setContent] = useState('');
