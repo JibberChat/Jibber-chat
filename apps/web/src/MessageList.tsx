@@ -21,13 +21,19 @@ const MESSAGE_ADDED = gql`
   }
 `;
 
+// const MESSAGE_ADDED = gql`
+//   subscription OnMessageAdded {
+//     messageAdded
+//   }
+// `;
+
 const MessageList = () => {
   //   const { data, loading, error } = useQuery(GET_MESSAGES, {
   //     variables: { roomId },
   //   });
 
-  const { data: subscriptionData } = useSubscription(MESSAGE_ADDED);
-  console.log('subscriptionData', subscriptionData);
+  const { data: subscriptionData, error } = useSubscription(MESSAGE_ADDED);
+  console.log('subscriptionData', subscriptionData, error);
 
   //   if (loading) return <p>Loading...</p>;
   //   if (error) return <p>Error :(</p>;

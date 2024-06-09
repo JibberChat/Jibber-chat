@@ -3,7 +3,10 @@ import { useMutation, gql } from '@apollo/client';
 
 const SEND_MESSAGE = gql`
   mutation SendMessage($input: SendMessageInput!) {
-    sendMessage(input: $input)
+    sendMessage(input: $input) {
+      userId
+      message
+    }
   }
 `;
 
