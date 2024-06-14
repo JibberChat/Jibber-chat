@@ -14,53 +14,122 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
+  DateTime: { input: any; output: any; }
 };
 
-export type Mutation = {
-  __typename?: 'Mutation';
-  sendMessage: SendMessage;
-};
-
-
-export type MutationSendMessageArgs = {
-  input: SendMessageInput;
-};
-
-export type Query = {
-  __typename?: 'Query';
-  getMedias: Scalars['String']['output'];
-  getMessages: Scalars['String']['output'];
-  getUsers: Scalars['String']['output'];
-};
-
-export type SendMessage = {
-  __typename?: 'SendMessage';
+export type ChatMessage = {
+  __typename?: 'ChatMessage';
+  id: Scalars['String']['output'];
   message: Scalars['String']['output'];
   userId: Scalars['String']['output'];
 };
 
-export type SendMessageInput = {
+export type ChatRoom = {
+  __typename?: 'ChatRoom';
+  id: Scalars['ID']['output'];
+  messages: Array<ChatMessage>;
+  name: Scalars['String']['output'];
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  createRoom: ChatRoom;
+  deleteRoom: Scalars['Boolean']['output'];
+  leaveRoom: Scalars['Boolean']['output'];
+  sendMessage: ChatMessage;
+  updateRoom: ChatRoom;
+};
+
+
+export type MutationCreateRoomArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteRoomArgs = {
+  roomId: Scalars['String']['input'];
+};
+
+
+export type MutationLeaveRoomArgs = {
+  roomId: Scalars['String']['input'];
+};
+
+
+export type MutationSendMessageArgs = {
   message: Scalars['String']['input'];
+  roomId: Scalars['String']['input'];
+};
+
+
+export type MutationUpdateRoomArgs = {
+  name: Scalars['String']['input'];
+  roomId: Scalars['String']['input'];
+};
+
+export type Query = {
+  __typename?: 'Query';
+  getMe: User;
+  getMedias: Scalars['String']['output'];
+  getMessages: Scalars['String']['output'];
+  getUnreadUserRooms: ChatRoom;
+  getUserProfile: User;
+  getUserRooms: ChatRoom;
+};
+
+
+export type QueryGetUserProfileArgs = {
   userId: Scalars['String']['input'];
 };
 
 export type Subscription = {
   __typename?: 'Subscription';
-  messageAdded: SendMessage;
+  userJoinedRoom: ChatMessage;
 };
 
-export type OnMessageAddedSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
+export type SubscriptionUserJoinedRoomArgs = {
+  roomId: Scalars['String']['input'];
+};
 
-export type OnMessageAddedSubscription = { __typename?: 'Subscription', messageAdded: { __typename?: 'SendMessage', userId: string, message: string } };
+export type User = {
+  __typename?: 'User';
+  createdAt: Scalars['DateTime']['output'];
+  email: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+};
 
-export type SendMessageMutationVariables = Exact<{
-  input: SendMessageInput;
+export type UserJoinedRoomSubscriptionVariables = Exact<{
+  roomId: Scalars['String']['input'];
 }>;
 
 
-export type SendMessageMutation = { __typename?: 'Mutation', sendMessage: { __typename?: 'SendMessage', userId: string, message: string } };
+export type UserJoinedRoomSubscription = { __typename?: 'Subscription', userJoinedRoom: { __typename?: 'ChatMessage', userId: string, message: string } };
+
+export type SendMessageMutationVariables = Exact<{
+  roomId: Scalars['String']['input'];
+  message: Scalars['String']['input'];
+}>;
 
 
-export const OnMessageAddedDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"OnMessageAdded"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"messageAdded"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<OnMessageAddedSubscription, OnMessageAddedSubscriptionVariables>;
-export const SendMessageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SendMessage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SendMessageInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sendMessage"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<SendMessageMutation, SendMessageMutationVariables>;
+export type SendMessageMutation = { __typename?: 'Mutation', sendMessage: { __typename?: 'ChatMessage', userId: string, message: string } };
+
+export type GetMeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMeQuery = { __typename?: 'Query', getMe: { __typename?: 'User', id: string, name: string, email: string, createdAt: any } };
+
+export type GetUserProfileQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type GetUserProfileQuery = { __typename?: 'Query', getUserProfile: { __typename?: 'User', id: string, name: string, email: string, createdAt: any } };
+
+
+export const UserJoinedRoomDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"userJoinedRoom"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roomId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userJoinedRoom"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"roomId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roomId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<UserJoinedRoomSubscription, UserJoinedRoomSubscriptionVariables>;
+export const SendMessageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SendMessage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roomId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"message"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sendMessage"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"roomId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roomId"}}},{"kind":"Argument","name":{"kind":"Name","value":"message"},"value":{"kind":"Variable","name":{"kind":"Name","value":"message"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<SendMessageMutation, SendMessageMutationVariables>;
+export const GetMeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getMe"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getMe"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]}}]} as unknown as DocumentNode<GetMeQuery, GetMeQueryVariables>;
+export const GetUserProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getUserProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getUserProfile"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]}}]} as unknown as DocumentNode<GetUserProfileQuery, GetUserProfileQueryVariables>;

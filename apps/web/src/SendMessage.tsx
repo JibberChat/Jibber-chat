@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
-import { gql } from './__generated__';
+import React, { useState } from "react";
+import { useMutation } from "@apollo/client";
+import { gql } from "./__generated__";
 
 // const SEND_MESSAGE = gql(`
 //   mutation SendMessage($input: SendMessageInput!) {
@@ -12,8 +12,8 @@ import { gql } from './__generated__';
 // `);
 
 const SEND_MESSAGE = gql(`
-  mutation SendMessage($input: SendMessageInput!) {
-    sendMessage(input: $input) {
+  mutation SendMessage($roomId: String!, $message: String!) {
+    sendMessage(roomId: $roomId, message: $message) {
       userId
       message
     }
@@ -21,8 +21,8 @@ const SEND_MESSAGE = gql(`
 `);
 
 const SendMessage = () => {
-  const [content, setContent] = useState('');
-  const [sender, setSender] = useState('');
+  const [content, setContent] = useState("");
+  const [sender, setSender] = useState("");
   // const [roomId, setRoomId] = useState('');
 
   const [sendMessage] = useMutation(SEND_MESSAGE);
@@ -30,25 +30,15 @@ const SendMessage = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     sendMessage({
-      variables: { input: { message: content, userId: sender } },
+      variables: { message: content, roomId: "1" },
     });
-    setContent('');
+    setContent("");
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Content"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Sender"
-        value={sender}
-        onChange={(e) => setSender(e.target.value)}
-      />
+      <input type="text" placeholder="Content" value={content} onChange={(e) => setContent(e.target.value)} />
+      <input type="text" placeholder="Sender" value={sender} onChange={(e) => setSender(e.target.value)} />
       {/* <input
         type="text"
         placeholder="Room ID"

@@ -13,8 +13,10 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n  subscription OnMessageAdded {\n    messageAdded {\n      userId\n      message\n    }\n  }\n": types.OnMessageAddedDocument,
-    "\n  mutation SendMessage($input: SendMessageInput!) {\n    sendMessage(input: $input) {\n      userId\n      message\n    }\n  }\n": types.SendMessageDocument,
+    "\n  subscription userJoinedRoom($roomId: String!) {\n    userJoinedRoom(roomId: $roomId) {\n      userId\n      message\n    }\n  }\n": types.UserJoinedRoomDocument,
+    "\n  mutation SendMessage($roomId: String!, $message: String!) {\n    sendMessage(roomId: $roomId, message: $message) {\n      userId\n      message\n    }\n  }\n": types.SendMessageDocument,
+    "\n  query getMe {\n    getMe {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n": types.GetMeDocument,
+    "\n  query getUserProfile($userId: String!) {\n    getUserProfile(userId: $userId) {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n": types.GetUserProfileDocument,
 };
 
 /**
@@ -34,11 +36,19 @@ export function gql(source: string): unknown;
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  subscription OnMessageAdded {\n    messageAdded {\n      userId\n      message\n    }\n  }\n"): (typeof documents)["\n  subscription OnMessageAdded {\n    messageAdded {\n      userId\n      message\n    }\n  }\n"];
+export function gql(source: "\n  subscription userJoinedRoom($roomId: String!) {\n    userJoinedRoom(roomId: $roomId) {\n      userId\n      message\n    }\n  }\n"): (typeof documents)["\n  subscription userJoinedRoom($roomId: String!) {\n    userJoinedRoom(roomId: $roomId) {\n      userId\n      message\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation SendMessage($input: SendMessageInput!) {\n    sendMessage(input: $input) {\n      userId\n      message\n    }\n  }\n"): (typeof documents)["\n  mutation SendMessage($input: SendMessageInput!) {\n    sendMessage(input: $input) {\n      userId\n      message\n    }\n  }\n"];
+export function gql(source: "\n  mutation SendMessage($roomId: String!, $message: String!) {\n    sendMessage(roomId: $roomId, message: $message) {\n      userId\n      message\n    }\n  }\n"): (typeof documents)["\n  mutation SendMessage($roomId: String!, $message: String!) {\n    sendMessage(roomId: $roomId, message: $message) {\n      userId\n      message\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query getMe {\n    getMe {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n"): (typeof documents)["\n  query getMe {\n    getMe {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query getUserProfile($userId: String!) {\n    getUserProfile(userId: $userId) {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n"): (typeof documents)["\n  query getUserProfile($userId: String!) {\n    getUserProfile(userId: $userId) {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};
