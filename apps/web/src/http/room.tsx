@@ -58,13 +58,13 @@ const UPDATE_ROOM = gql(`
 
 const DELETE_ROOM = gql(`
   mutation deleteRoom($roomId: String!) {
-    deleteRoom(roomId: $roomId) {}
+    deleteRoom(roomId: $roomId)
   }
 `);
 
 const LEAVE_ROOM = gql(`
   mutation leaveRoom($roomId: String!) {
-    leaveRoom(roomId: $roomId) {}
+    leaveRoom(roomId: $roomId)
   }
 `);
 
