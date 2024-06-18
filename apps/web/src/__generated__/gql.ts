@@ -19,10 +19,11 @@ const documents = {
     "\n  query getUnreadUserRooms {\n    getUnreadUserRooms {\n      id\n      name\n      messages {\n        id\n        message\n        userId\n      }\n    }\n  }\n": types.GetUnreadUserRoomsDocument,
     "\n  mutation createRoom($name: String!) {\n    createRoom(name: $name) {\n      id\n      name\n      messages {\n        id\n        message\n        userId\n      }\n    }\n  }\n": types.CreateRoomDocument,
     "\n  mutation updateRoom($roomId: String!, $name: String!) {\n    updateRoom(roomId: $roomId, name: $name) {\n      id\n      name\n      messages {\n        id\n        message\n        userId\n      }\n    }\n  }\n": types.UpdateRoomDocument,
-    "\n  mutation deleteRoom($roomId: String!) {\n    deleteRoom(roomId: $roomId) \n  }\n": types.DeleteRoomDocument,
+    "\n  mutation deleteRoom($roomId: String!) {\n    deleteRoom(roomId: $roomId)\n  }\n": types.DeleteRoomDocument,
     "\n  mutation leaveRoom($roomId: String!) {\n    leaveRoom(roomId: $roomId)\n  }\n": types.LeaveRoomDocument,
     "\n  query getMe {\n    getMe {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n": types.GetMeDocument,
     "\n  query getUserProfile($userId: String!) {\n    getUserProfile(userId: $userId) {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n": types.GetUserProfileDocument,
+    "\n  mutation updateUser($userId: String!, $name: String!, $email: String!) {\n    updateUser(userId: $userId, name: $name, email: $email) {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n": types.UpdateUserDocument,
 };
 
 /**
@@ -66,7 +67,7 @@ export function gql(source: "\n  mutation updateRoom($roomId: String!, $name: St
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation deleteRoom($roomId: String!) {\n    deleteRoom(roomId: $roomId) \n  }\n"): (typeof documents)["\n  mutation deleteRoom($roomId: String!) {\n    deleteRoom(roomId: $roomId) \n  }\n"];
+export function gql(source: "\n  mutation deleteRoom($roomId: String!) {\n    deleteRoom(roomId: $roomId)\n  }\n"): (typeof documents)["\n  mutation deleteRoom($roomId: String!) {\n    deleteRoom(roomId: $roomId)\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -79,6 +80,10 @@ export function gql(source: "\n  query getMe {\n    getMe {\n      id\n      nam
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query getUserProfile($userId: String!) {\n    getUserProfile(userId: $userId) {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n"): (typeof documents)["\n  query getUserProfile($userId: String!) {\n    getUserProfile(userId: $userId) {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation updateUser($userId: String!, $name: String!, $email: String!) {\n    updateUser(userId: $userId, name: $name, email: $email) {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n"): (typeof documents)["\n  mutation updateUser($userId: String!, $name: String!, $email: String!) {\n    updateUser(userId: $userId, name: $name, email: $email) {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};

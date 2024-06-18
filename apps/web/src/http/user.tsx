@@ -22,4 +22,16 @@ const GET_USER_PROFILE = gql(`
   }
 `);
 
+const UPDATE_USER = gql(`
+  mutation updateUser($userId: String!, $name: String!, $email: String!) {
+    updateUser(userId: $userId, name: $name, email: $email) {
+      id
+      name
+      email
+      createdAt
+    }
+  }
+`);
+
 export { GET_ME, GET_USER_PROFILE };
+export { UPDATE_USER };
