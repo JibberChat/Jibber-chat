@@ -4,5 +4,10 @@
   "semi": true,
   "singleQuote": false,
   "endOfLine": "auto",
-  "printWidth": 120
+  "printWidth": 120,
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "importOrder": ["^[./]", "^@/http/(.*)$", "^@/lib/(.*)$", "^@/components/(.*)$"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "importOrderParserPlugins": ["typescript", "decorators-legacy"]
 }

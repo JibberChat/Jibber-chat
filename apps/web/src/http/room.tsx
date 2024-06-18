@@ -1,6 +1,6 @@
 import { gql } from "../__generated__";
 
-const GET_USERROOMS = gql(`
+export const GET_USERROOMS = gql(`
   query getUserRooms {
     getUserRooms {
       id
@@ -14,7 +14,7 @@ const GET_USERROOMS = gql(`
   }
 `);
 
-const GET_UNREAD_USERROOMS = gql(`
+export const GET_UNREAD_USERROOMS = gql(`
   query getUnreadUserRooms {
     getUnreadUserRooms {
       id
@@ -28,7 +28,7 @@ const GET_UNREAD_USERROOMS = gql(`
   }
 `);
 
-const CREATE_ROOM = gql(`
+export const CREATE_ROOM = gql(`
   mutation createRoom($name: String!) {
     createRoom(name: $name) {
       id
@@ -42,7 +42,7 @@ const CREATE_ROOM = gql(`
   }
 `);
 
-const UPDATE_ROOM = gql(`
+export const UPDATE_ROOM = gql(`
   mutation updateRoom($roomId: String!, $name: String!) {
     updateRoom(roomId: $roomId, name: $name) {
       id
@@ -56,17 +56,14 @@ const UPDATE_ROOM = gql(`
   }
 `);
 
-const DELETE_ROOM = gql(`
+export const DELETE_ROOM = gql(`
   mutation deleteRoom($roomId: String!) {
     deleteRoom(roomId: $roomId)
   }
 `);
 
-const LEAVE_ROOM = gql(`
+export const LEAVE_ROOM = gql(`
   mutation leaveRoom($roomId: String!) {
     leaveRoom(roomId: $roomId)
   }
 `);
-
-export { GET_USERROOMS, GET_UNREAD_USERROOMS };
-export { CREATE_ROOM, UPDATE_ROOM, DELETE_ROOM, LEAVE_ROOM };

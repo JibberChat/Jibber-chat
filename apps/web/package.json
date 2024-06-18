@@ -12,18 +12,25 @@
   "dependencies": {
     "@apollo/client": "3.10.0-rc.1",
     "@apollo/experimental-nextjs-app-support": "^0.11.0",
+    "@radix-ui/react-avatar": "^1.0.4",
     "@repo/ui": "workspace:*",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "graphql": "^16.8.1",
     "graphql-ws": "^5.16.0",
+    "lucide-react": "^0.395.0",
     "next": "15.0.0-rc.0",
     "react": "19.0.0-rc-f994737d14-20240522",
-    "react-dom": "19.0.0-rc-f994737d14-20240522"
+    "react-dom": "19.0.0-rc-f994737d14-20240522",
+    "tailwind-merge": "^2.3.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",
     "@graphql-codegen/client-preset": "^4.2.6",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

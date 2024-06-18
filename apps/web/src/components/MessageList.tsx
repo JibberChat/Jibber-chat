@@ -1,6 +1,6 @@
 import React from "react";
 import { useSubscription } from "@apollo/client";
-import { gql } from "./__generated__";
+import { gql } from "@/__generated__";
 
 // const GET_MESSAGES = gql`
 //   query GetMessages($roomId: String!) {
