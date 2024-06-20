@@ -3,7 +3,7 @@ import SendIcon from "./icons/send";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { useMutation, useQuery, useSubscription } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 
 export const Chat = () => {
