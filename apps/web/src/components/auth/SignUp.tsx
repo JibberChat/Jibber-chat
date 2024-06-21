@@ -1,16 +1,12 @@
-import Image from "next/image";
+import { useSignUp } from "@clerk/clerk-react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import { useSignUp } from "@clerk/clerk-react";
 
-export function SignUp() {
+export function SignUp({ setShowSignUp }: { setShowSignUp: () => void }) {
   const { signUp, isLoaded } = useSignUp();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [code, setCode] = useState("");
   const [verificationInProgress, setVerificationInProgress] = useState(false);
 
   if (!isLoaded) {
@@ -24,16 +20,12 @@ export function SignUp() {
       // Verify the code and create the user account
       try {
         const result = await signUp.attemptEmailAddressVerification({
-          code,
+          code: e.currentTarget.code.value,
         });
         console.log(result);
-
         if (result.status === "complete") {
           console.log("Sign up successful");
-          // Redirect the user to a different page here, e.g.:
           window.location.reload();
-          
-          
         } else {
           console.error("Error during sign up", result);
         }
@@ -41,11 +33,11 @@ export function SignUp() {
         console.error("Error during sign up", err);
       }
     } else {
-      // Send a verification code to the email address
       try {
         await signUp.create({
-          emailAddress: email,
-          password,
+          emailAddress: e.currentTarget.email.value,
+          firstName: e.currentTarget.firstName.value,
+          password: e.currentTarget.password.value,
         });
         await signUp.prepareEmailAddressVerification();
         setVerificationInProgress(true);
@@ -54,75 +46,47 @@ export function SignUp() {
       }
     }
   };
-  
 
   return (
-    <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
-      <div className="flex items-center justify-center py-12">
-        <div className="mx-auto grid w-[350px] gap-6">
-          <div className="grid gap-2 text-center">
-            <h1 className="text-3xl font-bold">Create an account</h1>
-            <p className="text-balance text-muted-foreground">
-              Enter your email below to login to your account
-            </p>
-          </div>
-          <form onSubmit={handleSubmit}>
-            <div className="grid gap-4">
+    <>
+      <div className="grid gap-2 text-center">
+        <h1 className="text-3xl font-bold">Create an account</h1>
+        <p className="text-balance text-muted-foreground">Enter your email below to login to your account</p>
+      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="grid gap-4">
+          {verificationInProgress ? (
+            <div className="grid gap-2">
+              <Label htmlFor="code">Verification code</Label>
+              <Input id="code" name="code" type="text" placeholder="Enter verification code" required />
+            </div>
+          ) : (
+            <>
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={verificationInProgress}
-                />
+                <Input id="email" type="email" name="email" placeholder="jibber@example.com" required />
               </div>
-              {verificationInProgress && (
-                <div className="grid gap-2">
-                  <Label htmlFor="code">Verification code</Label>
-                  <Input
-                    id="code"
-                    type="text"
-                    placeholder="Enter verification code"
-                    required
-                    value={code}
-                    onChange={(e) => setCode(e.target.value)}
-                  />
-                </div>
-              )}
+              <div className="grid gap-2">
+                <Label htmlFor="firstname">Name</Label>
+                <Input id="firstname" type="firstname" name="firstname" placeholder="jibber" required />
+              </div>
               <div className="grid gap-2">
                 <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  disabled={verificationInProgress}
-                />
+                <Input id="password" name="password" type="password" required />
               </div>
-              <Button type="submit" className="w-full">
-                {verificationInProgress ? "Verify code" : "Sign up"}
-              </Button>
-              <Button variant="outline" className="w-full">
-                Sign up with Google
-              </Button>
-            </div>
-          </form>
+            </>
+          )}
+          <Button type="submit" className="w-full">
+            {verificationInProgress ? "Verify code" : "Sign up"}
+          </Button>
         </div>
+      </form>
+      <div className="mt-4 text-center text-sm">
+        <p>Already have an account?</p>
+        <button className="underline" onClick={setShowSignUp}>
+          Sign in
+        </button>
       </div>
-      <div className="hidden bg-muted lg:block">
-        <Image
-          src="/placeholder.svg"
-          alt="Image"
-          width="1920"
-          height="1080"
-          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-        />
-      </div>
-    </div>
+    </>
   );
 }
