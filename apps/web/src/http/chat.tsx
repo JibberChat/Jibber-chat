@@ -5,8 +5,8 @@ export const GET_ROOMMESSAGES = gql(`
     getRoomMessages(roomId: $roomId) {
       messages {
         id
-        message
-        userId
+        text
+        # userId
       }
     }
   }
@@ -15,8 +15,9 @@ export const GET_ROOMMESSAGES = gql(`
 export const SEND_MESSAGE = gql(`
   mutation SendMessage($roomId: String!, $message: String!) {
     sendMessage(roomId: $roomId, message: $message) {
-      userId
-      message
+      # userId
+      id
+      text
     }
   }
 `);
@@ -24,8 +25,9 @@ export const SEND_MESSAGE = gql(`
 export const ON_MESSAGE_ADDED = gql(`
   subscription userJoinedRoom($roomId: String!) {
     userJoinedRoom(roomId: $roomId) {
-      userId
-      message
+      # userId
+      id
+      text
     }
   }
 `);

@@ -7,8 +7,8 @@ export const GET_USERROOMS = gql(`
       name
       messages {
         id
-        message
-        userId
+        text
+        # userId
       }
     }
   }
@@ -21,8 +21,8 @@ export const GET_UNREAD_USERROOMS = gql(`
       name
       messages {
         id
-        message
-        userId
+        text
+        # userId
       }
     }
   }
@@ -35,8 +35,8 @@ export const CREATE_ROOM = gql(`
       name
       messages {
         id
-        message
-        userId
+        text
+        # userId
       }
     }
   }
@@ -49,8 +49,8 @@ export const UPDATE_ROOM = gql(`
       name
       messages {
         id
-        message
-        userId
+        text
+        # userId
       }
     }
   }
