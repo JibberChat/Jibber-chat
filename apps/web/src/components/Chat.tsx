@@ -31,7 +31,7 @@ export const Chat = () => {
         const newMessage = subscriptionData.data.userJoinedRoom;
         setMessages((prevMessages) => [
           ...prevMessages,
-          { id: prevMessages.length + 1, message: newMessage.message, user: newMessage.userId, me: false },
+          { id: prevMessages.length + 1, message: newMessage.text, user: "1", me: false },
         ]);
         return prev;
       },

@@ -5,11 +5,6 @@ export const GET_USERROOMS = gql(`
     getUserRooms {
       id
       name
-      messages {
-        id
-        message
-        userId
-      }
     }
   }
 `);
@@ -19,11 +14,6 @@ export const GET_UNREAD_USERROOMS = gql(`
     getUnreadUserRooms {
       id
       name
-      messages {
-        id
-        message
-        userId
-      }
     }
   }
 `);
@@ -33,11 +23,6 @@ export const CREATE_ROOM = gql(`
     createRoom(name: $name) {
       id
       name
-      messages {
-        id
-        message
-        userId
-      }
     }
   }
 `);
@@ -47,11 +32,6 @@ export const UPDATE_ROOM = gql(`
     updateRoom(roomId: $roomId, name: $name) {
       id
       name
-      messages {
-        id
-        message
-        userId
-      }
     }
   }
 `);
