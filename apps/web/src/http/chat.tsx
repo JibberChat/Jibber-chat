@@ -6,7 +6,9 @@ export const GET_ROOMMESSAGES = gql(`
       messages {
         id
         text
-        # userId
+        user {
+          name
+        }
       }
     }
   }
@@ -15,7 +17,6 @@ export const GET_ROOMMESSAGES = gql(`
 export const SEND_MESSAGE = gql(`
   mutation SendMessage($roomId: String!, $message: String!) {
     sendMessage(roomId: $roomId, message: $message) {
-      # userId
       id
       text
     }
