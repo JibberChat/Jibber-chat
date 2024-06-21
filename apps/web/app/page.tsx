@@ -10,12 +10,9 @@ export default function Home() {
   console.log("rooms", rooms?.getUserRooms);
 
   return (
-    <div className="flex h-screen w-full flex-col bg-gray-100 dark:bg-gray-900">
-      {/* <Header /> */}
-      <div className="flex flex-1 overflow-hidden">
+    <div className="grid min-h-screen w-full grid-cols-[280px_1fr]">
         <Sidebar/>
         <Chat />
-      </div>
     </div>
   );
 }
