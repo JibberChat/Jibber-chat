@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 export function SignUp({ setShowSignUp }: { setShowSignUp: () => void }) {
   const { signUp, isLoaded } = useSignUp();
   const [verificationInProgress, setVerificationInProgress] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   if (!isLoaded) {
     return null;
@@ -15,34 +16,53 @@ export function SignUp({ setShowSignUp }: { setShowSignUp: () => void }) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(null);
+
+    const form = e.currentTarget;
 
     if (verificationInProgress) {
-      // Verify the code and create the user account
+      const code = form.code?.value;
+      if (!code) {
+        setError("Verification code is required");
+        return;
+      }
+
       try {
         const result = await signUp.attemptEmailAddressVerification({
-          code: e.currentTarget.code.value,
+          code,
         });
         console.log(result);
         if (result.status === "complete") {
           console.log("Sign up successful");
           window.location.reload();
         } else {
-          console.error("Error during sign up", result);
+          setError("Error during sign up");
         }
       } catch (err) {
         console.error("Error during sign up", err);
+        setError("An error occurred during sign up");
       }
     } else {
+      const email = form.email?.value;
+      const username = form.firstName?.value;
+      const password = form.password?.value;
+
+      if (!email || !username || !password) {
+        setError("All fields are required");
+        return;
+      }
+
       try {
         await signUp.create({
-          emailAddress: e.currentTarget.email.value,
-          firstName: e.currentTarget.firstName.value,
-          password: e.currentTarget.password.value,
+          emailAddress: email,
+          username,
+          password,
         });
         await signUp.prepareEmailAddressVerification();
         setVerificationInProgress(true);
       } catch (err) {
         console.error("Error sending verification code", err);
+        setError("An error occurred while sending the verification code");
       }
     }
   };
@@ -51,7 +71,7 @@ export function SignUp({ setShowSignUp }: { setShowSignUp: () => void }) {
     <>
       <div className="grid gap-2 text-center">
         <h1 className="text-3xl font-bold">Create an account</h1>
-        <p className="text-balance text-muted-foreground">Enter your email below to login to your account</p>
+        <p className="text-balance text-muted-foreground">Enter your email below to create your account</p>
       </div>
       <form onSubmit={handleSubmit}>
         <div className="grid gap-4">
@@ -67,8 +87,8 @@ export function SignUp({ setShowSignUp }: { setShowSignUp: () => void }) {
                 <Input id="email" type="email" name="email" placeholder="jibber@example.com" required />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="firstname">Name</Label>
-                <Input id="firstname" type="firstname" name="firstname" placeholder="jibber" required />
+                <Label htmlFor="firstName">Name</Label>
+                <Input id="firstName" type="text" name="firstName" placeholder="jibber" required />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="password">Password</Label>
@@ -76,6 +96,7 @@ export function SignUp({ setShowSignUp }: { setShowSignUp: () => void }) {
               </div>
             </>
           )}
+          {error && <div className="text-red-500">{error}</div>}
           <Button type="submit" className="w-full">
             {verificationInProgress ? "Verify code" : "Sign up"}
           </Button>
