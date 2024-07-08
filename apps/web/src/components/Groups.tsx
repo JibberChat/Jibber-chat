@@ -1,35 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import ActivityIcon from "./icons/activity";
-import PlusIcon from "./icons/plus";
-import { CREATE_ROOM, GET_USERROOMS } from "@/http/room";
 import { useMutation, useQuery } from "@apollo/client";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { useState } from "react";
 
-interface Group {
-  id: string;
-  name: string;
-}
+import PlusIcon from "./icons/plus";
+
+import { CREATE_ROOM, GET_USERROOMS } from "@/http/room";
+
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export const Groups = () => {
-  // const [groups, setGroups] = useState([]);
-  // const [newGroup, setNewGroup] = useState("");
-
-  // useEffect(() => {
-  //   // Fetch the groups from the server
-  //   GET_USERROOMS().then((data) => setGroups(data));
-  // }, []);
-
-  // const handleCreateGroup = () => {
-  //   // Create a new group
-  //   CREATE_ROOM(newGroup).then((data) => {
-  //     setGroups([...groups, data]);
-  //     setNewGroup("");
-  //   });
-  // };
-
   const { data: rooms } = useQuery(GET_USERROOMS, { variables: { userId: "1" } });
   const [createRoom] = useMutation(CREATE_ROOM);
   const [isOpen, setIsOpen] = useState(false);
@@ -88,9 +77,10 @@ export const Groups = () => {
   );
 };
 
-
-  {/* {rooms?.getUserRooms?.map((room: any) => (
+{
+  /* {rooms?.getUserRooms?.map((room: any) => (
         <Button key={room.id} variant="outline" className="w-full justify-start">
           {room.name}
         </Button>
-      ))} */}
+      ))} */
+}

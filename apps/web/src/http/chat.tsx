@@ -3,12 +3,10 @@ import { gql } from "@/__generated__";
 export const GET_ROOMMESSAGES = gql(`
   query getRoomMessages($roomId: String!) {
     getRoomMessages(roomId: $roomId) {
-      messages {
-        id
-        text
-        user {
-          name
-        }
+      id
+      text
+      user {
+        name
       }
     }
   }
