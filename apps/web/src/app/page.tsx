@@ -2,6 +2,7 @@
 
 import { useQuery } from "@apollo/client";
 import { SignOutButton } from "@clerk/clerk-react";
+import { UserResource } from "@clerk/types";
 
 import { GET_USERROOMS } from "@/http/room";
 
@@ -9,7 +10,7 @@ import { AuthGuard } from "@/components/AuthGuard";
 import { Chat } from "@/components/Chat";
 import { Sidebar } from "@/components/Sidebar";
 
-function Home() {
+function Home({ user }: Readonly<{ user: UserResource }>) {
   const { data: rooms } = useQuery(GET_USERROOMS);
   console.log("rooms", rooms?.getUserRooms);
 
@@ -26,11 +27,7 @@ function Home() {
 }
 
 const AuthorizationHome = () => {
-  return (
-    <AuthGuard>
-      <Home />
-    </AuthGuard>
-  );
+  return <AuthGuard render={Home} />;
 };
 
 export default AuthorizationHome;

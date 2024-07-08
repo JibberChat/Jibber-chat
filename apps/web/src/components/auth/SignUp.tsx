@@ -19,6 +19,9 @@ export function SignUp({ setShowSignUp }: { setShowSignUp: () => void }) {
     setError(null);
 
     const form = e.currentTarget;
+    const email = form.email?.value;
+    const username = form.firstName?.value;
+    const password = form.password?.value;
 
     if (verificationInProgress) {
       const code = form.code?.value;
@@ -43,10 +46,6 @@ export function SignUp({ setShowSignUp }: { setShowSignUp: () => void }) {
         setError("An error occurred during sign up");
       }
     } else {
-      const email = form.email?.value;
-      const username = form.firstName?.value;
-      const password = form.password?.value;
-
       if (!email || !username || !password) {
         setError("All fields are required");
         return;
@@ -60,9 +59,15 @@ export function SignUp({ setShowSignUp }: { setShowSignUp: () => void }) {
         });
         await signUp.prepareEmailAddressVerification();
         setVerificationInProgress(true);
-      } catch (err) {
+      } catch (err: unknown) {
         console.error("Error sending verification code", err);
-        setError("An error occurred while sending the verification code");
+        // @ts-ignore
+        if (err?.errors instanceof Array) {
+          // @ts-ignore
+          setError(err.errors[0].message);
+        } else {
+          setError("An error occurred while sending the verification code");
+        }
       }
     }
   };

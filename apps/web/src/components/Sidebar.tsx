@@ -1,6 +1,6 @@
+import { Contact } from "./Contact";
 import PlusIcon from "./icons/plus";
 import { Button } from "./ui/button";
-import { Contact } from "./Contact";
 
 const users = [
   { id: 1, name: "Nolan", message: "Go Dev!" },
@@ -18,9 +18,7 @@ export const Sidebar = () => {
   return (
     <div className="border-r bg-gray-50 dark:border-gray-800 dark:bg-gray-850">
       <div className="flex h-16 items-center justify-between border-b px-6 dark:border-gray-800">
-        <h2 className="text-sm font-medium text-gray-700 dark:text-gray-400">
-          Utilisateurs actifs
-        </h2>
+        <h2 className="text-sm font-medium text-gray-700 dark:text-gray-400">Utilisateurs actifs</h2>
         <Button className="rounded-full" size="icon" variant="ghost">
           <PlusIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
         </Button>
@@ -40,4 +38,4 @@ export const Sidebar = () => {
       </div>
     </div>
   );
-}
+};

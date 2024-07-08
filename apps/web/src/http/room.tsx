@@ -5,11 +5,6 @@ export const GET_USERROOMS = gql(`
     getUserRooms {
       id
       name
-      messages {
-        id
-        text
-        # userId
-      }
     }
   }
 `);
@@ -19,51 +14,36 @@ export const GET_UNREAD_USERROOMS = gql(`
     getUnreadUserRooms {
       id
       name
-      messages {
-        id
-        text
-        # userId
-      }
     }
   }
 `);
 
 export const CREATE_ROOM = gql(`
-  mutation createRoom($name: String!) {
-    createRoom(name: $name) {
+  mutation createRoom($input: CreateRoomInput!) {
+    createRoom(createRoomInput: $input) {
       id
       name
-      messages {
-        id
-        text
-        # userId
-      }
     }
   }
 `);
 
 export const UPDATE_ROOM = gql(`
-  mutation updateRoom($roomId: String!, $name: String!) {
-    updateRoom(roomId: $roomId, name: $name) {
+  mutation updateRoom($input: UpdateRoomInput!) {
+    updateRoom(updateRoomInput: $input) {
       id
       name
-      messages {
-        id
-        text
-        # userId
-      }
     }
   }
 `);
 
 export const DELETE_ROOM = gql(`
-  mutation deleteRoom($roomId: String!) {
-    deleteRoom(roomId: $roomId)
+  mutation deleteRoom($input: DeleteOrLeaveRoomInput!) {
+    deleteRoom(deleteRoomInput: $input)
   }
 `);
 
 export const LEAVE_ROOM = gql(`
-  mutation leaveRoom($roomId: String!) {
-    leaveRoom(roomId: $roomId)
+  mutation leaveRoom($input: DeleteOrLeaveRoomInput!) {
+    leaveRoom(leaveRoomInput: $input) 
   }
 `);

@@ -1,15 +1,17 @@
 import { useUser } from "@clerk/clerk-react";
+import type { UserResource } from "@clerk/types";
 import Image from "next/image";
 import { useState } from "react";
 
 import { SignIn } from "./auth/SignIn";
 import { SignUp } from "./auth/SignUp";
 
-type AuthGuardsProps = {
-  children: React.ReactNode;
+type AuthGuardProps<T extends object = {}> = {
+  render: React.FC<{ user: UserResource } & T>;
+  props?: T;
 };
 
-export const AuthGuard = ({ children }: AuthGuardsProps) => {
+export const AuthGuard = <T extends object>({ render: InnerComponent, props }: Readonly<AuthGuardProps<T>>) => {
   const { user } = useUser();
   const [showSignUp, setShowSignUp] = useState(false);
 
@@ -38,5 +40,5 @@ export const AuthGuard = ({ children }: AuthGuardsProps) => {
     );
   }
 
-  return <>{children}</>;
+  return <InnerComponent user={user} {...(props as T)} />;
 };

@@ -16,6 +16,7 @@
     "@clerk/nextjs": "^5.1.6",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-slot": "^1.1.0",
     "@repo/ui": "workspace:*",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -29,8 +30,10 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@clerk/types": "^4.6.1",
     "@graphql-codegen/cli": "^5.0.2",
     "@graphql-codegen/client-preset": "^4.2.6",
+    "@graphql-codegen/introspection": "^4.0.3",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
