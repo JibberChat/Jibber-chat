@@ -10,6 +10,9 @@ const config: CodegenConfig = {
         gqlTagName: "gql",
       },
     },
+    "src/__generated__/introspection.json": {
+      plugins: ["introspection"],
+    },
   },
   ignoreNoDocuments: false,
 };
