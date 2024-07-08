@@ -1,4 +1,4 @@
-import { SVGProps } from "react";
+import React,{ SVGProps } from "react";
 
 export default function SearchIcon(props : SVGProps<SVGSVGElement>) {
     return (

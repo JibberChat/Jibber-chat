@@ -1,39 +1,19 @@
-import { Contact } from "./Contact";
-import PlusIcon from "./icons/plus";
-import { Button } from "./ui/button";
+import Link from "next/link";
+import React from "react";
 
-const users = [
-  { id: 1, name: "Nolan", message: "Go Dev!" },
-  {
-    id: 2,
-    name: "Chahine",
-    message: "Va checker mon app de reconnaissance faciale en Rust",
-  },
-  { id: 3, name: "Bakary", message: "Incroyable le shell!" },
-  { id: 4, name: "Aymene", message: "Bientôt chez Tiktok!" },
-  { id: 5, name: "Romain", message: "Incroyable les vacances en Grèce !" },
-];
+import { Groups } from "./Groups";
 
 export const Sidebar = () => {
   return (
-    <div className="border-r bg-gray-50 dark:border-gray-800 dark:bg-gray-850">
-      <div className="flex h-16 items-center justify-between border-b px-6 dark:border-gray-800">
-        <h2 className="text-sm font-medium text-gray-700 dark:text-gray-400">Utilisateurs actifs</h2>
-        <Button className="rounded-full" size="icon" variant="ghost">
-          <PlusIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-        </Button>
+    <div className="flex flex-col border-r bg-muted/40">
+      <div className="flex h-[60px] items-center border-b px-6">
+        <Link href="#" className="flex items-center gap-2 font-semibold" prefetch={false}>
+          <span>Jibber App</span>
+        </Link>
       </div>
-      <div className="h-[calc(100vh-64px)] overflow-y-auto">
-        <div className="space-y-4 p-4">
-          {users.map((user) => (
-            <Contact
-              key={user.id}
-              avatar={user.name.substring(0, 2)}
-              name={user.name}
-              message={user.message}
-              room_id={String(user.id)}
-            />
-          ))}
+      <div className="flex-1 overflow-auto py-2">
+        <div className="flex flex-col h-full justify-end px-4">
+          <Groups />
         </div>
       </div>
     </div>
