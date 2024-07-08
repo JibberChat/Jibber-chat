@@ -13,7 +13,7 @@ interface ChatMessageProps {
 export const ChatMessage = ({ sender, message, time, avatarSrc, isMe }: ChatMessageProps) => {
   const displayAvatar = (
     <Avatar className="h-10 w-10">
-      <AvatarImage src="/placeholder-user.jpg" />
+      <AvatarImage src="/placeholder.jpg" />
       <AvatarFallback>{sender.name.slice(0, 2)}</AvatarFallback>
     </Avatar>
   );
@@ -25,7 +25,9 @@ export const ChatMessage = ({ sender, message, time, avatarSrc, isMe }: ChatMess
         <div className={`rounded-lg ${isMe ? "bg-primary text-primary-foreground" : "bg-muted"} p-3 text-sm`}>
           <p>{message}</p>
         </div>
-        {/* <div className="text-xs text-muted-foreground">{time.toISOString()}</div> */}
+        <div className="text-xs text-muted-foreground">
+          {time.toLocaleDateString()} à {time.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}
+        </div>
       </div>
       {isMe && <>{displayAvatar}</>}
     </div>
