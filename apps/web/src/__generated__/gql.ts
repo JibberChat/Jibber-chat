@@ -69,6 +69,7 @@ export function gql(source: "\n  mutation createRoom($input: CreateRoomInput!) {
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation updateRoom($input: UpdateRoomInput!) {\n    updateRoom(updateRoomInput: $input) {\n      id\n      name\n    }\n  }\n"): (typeof documents)["\n  mutation updateRoom($input: UpdateRoomInput!) {\n    updateRoom(updateRoomInput: $input) {\n      id\n      name\n    }\n  }\n"];
+
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -1,7 +1,7 @@
-import { split, HttpLink } from "@apollo/client";
-import { ApolloClient, InMemoryCache } from "@apollo/experimental-nextjs-app-support";
-import { getMainDefinition } from "@apollo/client/utilities";
+import { HttpLink, split } from "@apollo/client";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { ApolloClient, InMemoryCache } from "@apollo/experimental-nextjs-app-support";
 import { createClient } from "graphql-ws";
 
 const httpLink = new HttpLink({
@@ -32,16 +32,15 @@ const splitLink = split(
 let apolloClient: ApolloClient<any> | null = null;
 
 export const getClient = () => {
-  console.log("getClient");
   if (!apolloClient) {
     apolloClient = new ApolloClient({
       // ssrMode: false,
       ssrForceFetchDelay: 100,
       link: splitLink,
-      // @ts-ignore 
+      // @ts-ignore
       // cache: new InMemoryCache().restore(window.__APOLLO_STATE__),
-      cache: new InMemoryCache()
+      cache: new InMemoryCache(),
     });
   }
   return apolloClient;
-}
+};
