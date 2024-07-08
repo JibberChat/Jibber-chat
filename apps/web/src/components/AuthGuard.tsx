@@ -11,7 +11,10 @@ type AuthGuardProps<T extends object = {}> = {
   props?: T;
 };
 
-export const AuthGuard = <T extends object>({ render: InnerComponent, props }: Readonly<AuthGuardProps<T>>) => {
+export const AuthGuard: React.FC<Readonly<AuthGuardProps>> = <T extends object>({
+  render: InnerComponent,
+  props,
+}: Readonly<AuthGuardProps<T>>) => {
   const { user } = useUser();
   const [showSignUp, setShowSignUp] = useState(false);
 

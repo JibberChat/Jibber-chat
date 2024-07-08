@@ -1,9 +1,9 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
+import { Plus } from "lucide-react";
 import { useState } from "react";
+import { Room } from "types/room.type";
 
-import PlusIcon from "./icons/plus";
-
-import { CREATE_ROOM, GET_USERROOMS } from "@/http/room";
+import { CREATE_ROOM } from "@/http/room";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,8 +18,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export const Groups = () => {
-  const { data: rooms } = useQuery(GET_USERROOMS, { variables: { userId: "1" } });
+interface GroupsProps {
+  rooms: Room[];
+  // eslint-disable-next-line no-unused-vars
+  setSelectedRoom: (room: Room) => void;
+}
+
+export const Groups: React.FC<Readonly<GroupsProps>> = ({ rooms, setSelectedRoom }) => {
   const [createRoom] = useMutation(CREATE_ROOM);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -30,9 +35,14 @@ export const Groups = () => {
 
     createRoom({
       variables: {
-        name,
+        input: {
+          name,
+        },
       },
+    }).then(({ data }) => {
+      setSelectedRoom(data.createRoom);
     });
+
     setIsOpen(false);
   };
 
@@ -43,7 +53,7 @@ export const Groups = () => {
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
             <Button variant="ghost" size="icon" className="h-8 w-8">
-              <PlusIcon className="h-4 w-4" />
+              <Plus className="h-4 w-4" />
               <span className="sr-only">Add Room</span>
             </Button>
           </DialogTrigger>
@@ -68,19 +78,18 @@ export const Groups = () => {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="flex-grow">
-        <Button variant="outline" className="w-full">
-          {rooms?.getUserRooms?.name || ""}
-        </Button>
+      <div className="flex flex-col gap-4 mt-4">
+        {rooms?.map((room: Room) => (
+          <Button
+            key={room.id}
+            variant="outline"
+            className="w-full justify-start"
+            onClick={() => setSelectedRoom(room)}
+          >
+            {room.name}
+          </Button>
+        ))}
       </div>
     </div>
   );
 };
-
-{
-  /* {rooms?.getUserRooms?.map((room: any) => (
-        <Button key={room.id} variant="outline" className="w-full justify-start">
-          {room.name}
-        </Button>
-      ))} */
-}

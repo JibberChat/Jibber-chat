@@ -24,7 +24,6 @@ export const SEND_MESSAGE = gql(`
 export const ON_MESSAGE_ADDED = gql(`
   subscription userJoinedRoom($roomId: String!) {
     userJoinedRoom(roomId: $roomId) {
-      # userId
       id
       text
     }

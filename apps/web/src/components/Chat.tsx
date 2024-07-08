@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { Room } from "types/room.type";
 
 import { ChatHeader } from "./chat/ChatHeader";
 import { ChatInput } from "./chat/ChatInput";
@@ -8,49 +9,53 @@ import { ChatMessage } from "./chat/ChatMessage";
 import { GET_ROOMMESSAGES, ON_MESSAGE_ADDED, SEND_MESSAGE } from "@/http/chat";
 
 interface ChatProps {
-  selectedRoom: { id: string; name: string };
+  room: Room;
 }
 
-export const Chat = ({ selectedRoom }: Readonly<ChatProps>) => {
-  const [messages, setMessages] = useState([
-    { id: 1, message: "Hey, how's it going?", user: "JD", me: false },
-    { id: 2, message: "I'm doing great, thanks for asking!", user: "Me", me: true },
-  ]);
-
-  const { subscribeToMore, data } = useQuery(GET_ROOMMESSAGES, { variables: { roomId: "1" } });
-  console.log("data", data);
+export const Chat: React.FC<Readonly<ChatProps>> = ({ room }) => {
+  const { subscribeToMore, data } = useQuery(GET_ROOMMESSAGES, { variables: { roomId: room.id } });
 
   const [sendMessage] = useMutation(SEND_MESSAGE);
 
   useEffect(() => {
     subscribeToMore({
       document: ON_MESSAGE_ADDED,
-      variables: { roomId: selectedRoom.id },
+      variables: { roomId: room.id },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
         const newMessage = subscriptionData.data.userJoinedRoom;
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { id: prevMessages.length + 1, message: newMessage.text, user: "1", me: false },
-        ]);
-        return prev;
+        return {
+          getRoomMessages: [
+            ...prev.getRoomMessages,
+            { id: newMessage.id, text: newMessage.text, user: newMessage.user },
+          ],
+        };
       },
     });
   }, []);
 
   return (
     <div className="flex flex-col">
-      <ChatHeader />
+      <ChatHeader room={room} />
       {/* <ChatMessages /> */}
       <div className="flex-1 overflow-auto p-6">
         <div className="grid gap-4">
-          {messages.map(({ id, message, user, me }) => (
-            <ChatMessage key={id} message={message} sender={user} time={new Date()} avatarSrc={""} isMe={me} />
-          ))}
+          {data?.getRoomMessages.map(
+            ({ id, text, user }: { id: string; text: string; user: { name: string }; me: boolean }, index: number) => (
+              <ChatMessage
+                key={id}
+                message={text}
+                sender={user}
+                time={new Date()}
+                avatarSrc={""}
+                isMe={index % 2 === 0}
+              />
+            )
+          )}
         </div>
       </div>
 
-      <ChatInput sendMessage={sendMessage} />
+      <ChatInput sendMessage={(message: string) => sendMessage({ variables: { roomId: room.id, message } })} />
     </div>
   );
 };

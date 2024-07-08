@@ -1,20 +1,20 @@
-import SendIcon from "../icons/send";
+import { Send } from "lucide-react";
+
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 
 interface ChatInputProps {
-  sendMessage: (args: { variables: { message: string; roomId: string } }) => void;
+  // eslint-disable-next-line no-unused-vars
+  sendMessage: (message: string) => void;
 }
 
-export const ChatInput = ({ sendMessage }: ChatInputProps) => {
+export const ChatInput: React.FC<Readonly<ChatInputProps>> = ({ sendMessage }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const message = e.currentTarget.message || "";
     if (message.value.trim() === "") return;
     if (message) {
-      sendMessage({
-        variables: { message: message.value, roomId: "1" },
-      });
+      sendMessage(message.value);
       message.value = ""; // Clear the input field
     }
   };
@@ -30,7 +30,7 @@ export const ChatInput = ({ sendMessage }: ChatInputProps) => {
             className="min-h-[48px] rounded-2xl resize-none p-4 border border-neutral-400 shadow-sm pr-16"
           />
           <Button type="submit" size="icon" className="absolute w-8 h-8 top-3 right-3">
-            <SendIcon className="w-4 h-4" />
+            <Send className="w-4 h-4" />
             <span className="sr-only">Send</span>
           </Button>
         </div>

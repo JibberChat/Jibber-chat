@@ -5,7 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function SignIn({ setShowSignUp }: { setShowSignUp: () => void }) {
+interface SignInProps {
+  setShowSignUp: () => void;
+}
+
+export const SignIn: React.FC<Readonly<SignInProps>> = ({ setShowSignUp }) => {
   const { signIn, isLoaded } = useSignIn();
 
   if (!isLoaded) {
@@ -65,4 +69,4 @@ export function SignIn({ setShowSignUp }: { setShowSignUp: () => void }) {
       </div>
     </>
   );
-}
+};

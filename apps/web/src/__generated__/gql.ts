@@ -15,7 +15,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 const documents = {
     "\n  query getRoomMessages($roomId: String!) {\n    getRoomMessages(roomId: $roomId) {\n      id\n      text\n      user {\n        name\n      }\n    }\n  }\n": types.GetRoomMessagesDocument,
     "\n  mutation SendMessage($roomId: String!, $message: String!) {\n    sendMessage(roomId: $roomId, message: $message) {\n      id\n      text\n    }\n  }\n": types.SendMessageDocument,
-    "\n  subscription userJoinedRoom($roomId: String!) {\n    userJoinedRoom(roomId: $roomId) {\n      # userId\n      id\n      text\n    }\n  }\n": types.UserJoinedRoomDocument,
+    "\n  subscription userJoinedRoom($roomId: String!) {\n    userJoinedRoom(roomId: $roomId) {\n      id\n      text\n    }\n  }\n": types.UserJoinedRoomDocument,
     "\n  query getUserRooms {\n    getUserRooms {\n      id\n      name\n    }\n  }\n": types.GetUserRoomsDocument,
     "\n  query getUnreadUserRooms {\n    getUnreadUserRooms {\n      id\n      name\n    }\n  }\n": types.GetUnreadUserRoomsDocument,
     "\n  mutation createRoom($input: CreateRoomInput!) {\n    createRoom(createRoomInput: $input) {\n      id\n      name\n    }\n  }\n": types.CreateRoomDocument,
@@ -52,7 +52,7 @@ export function gql(source: "\n  mutation SendMessage($roomId: String!, $message
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  subscription userJoinedRoom($roomId: String!) {\n    userJoinedRoom(roomId: $roomId) {\n      # userId\n      id\n      text\n    }\n  }\n"): (typeof documents)["\n  subscription userJoinedRoom($roomId: String!) {\n    userJoinedRoom(roomId: $roomId) {\n      # userId\n      id\n      text\n    }\n  }\n"];
+export function gql(source: "\n  subscription userJoinedRoom($roomId: String!) {\n    userJoinedRoom(roomId: $roomId) {\n      id\n      text\n    }\n  }\n"): (typeof documents)["\n  subscription userJoinedRoom($roomId: String!) {\n    userJoinedRoom(roomId: $roomId) {\n      id\n      text\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -69,7 +69,6 @@ export function gql(source: "\n  mutation createRoom($input: CreateRoomInput!) {
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation updateRoom($input: UpdateRoomInput!) {\n    updateRoom(updateRoomInput: $input) {\n      id\n      name\n    }\n  }\n"): (typeof documents)["\n  mutation updateRoom($input: UpdateRoomInput!) {\n    updateRoom(updateRoomInput: $input) {\n      id\n      name\n    }\n  }\n"];
-
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
