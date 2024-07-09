@@ -34,7 +34,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "DateTime",
+                "name": "Date",
                 "ofType": null
               }
             },
@@ -167,8 +167,8 @@
       },
       {
         "kind": "SCALAR",
-        "name": "DateTime",
-        "description": "A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.",
+        "name": "Date",
+        "description": "Date custom scalar type",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -745,7 +745,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "DateTime",
+                "name": "Date",
                 "ofType": null
               }
             },

@@ -5,12 +5,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 interface ChatMessageProps {
   sender: { name: string };
   message: string;
-  time: Date;
+  date: Date;
   avatarSrc: string;
   isMe: boolean;
 }
 
-export const ChatMessage = ({ sender, message, time, avatarSrc, isMe }: ChatMessageProps) => {
+export const ChatMessage = ({ sender, message, date, avatarSrc, isMe }: Readonly<ChatMessageProps>) => {
   const displayAvatar = (
     <Avatar className="h-10 w-10">
       <AvatarImage src={avatarSrc} />
@@ -26,7 +26,7 @@ export const ChatMessage = ({ sender, message, time, avatarSrc, isMe }: ChatMess
           <p className={`break-words ${isMe ? "text-right" : ""}`}>{message}</p>
         </div>
         <div className={`text-xs text-muted-foreground ${isMe ? "text-right" : ""}`}>
-          {time.toLocaleDateString()} à {time.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}
+          {date.toLocaleDateString()} to {date.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}
         </div>
       </div>
       {isMe && <>{displayAvatar}</>}

@@ -14,13 +14,13 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
-  DateTime: { input: any; output: any; }
+  /** Date custom scalar type */
+  Date: { input: any; output: any; }
 };
 
 export type ChatMessage = {
   __typename?: 'ChatMessage';
-  createdAt: Scalars['DateTime']['output'];
+  createdAt: Scalars['Date']['output'];
   id: Scalars['String']['output'];
   text: Scalars['String']['output'];
   user: UserMessage;
@@ -120,7 +120,7 @@ export type UpdateRoomInput = {
 
 export type User = {
   __typename?: 'User';
-  createdAt: Scalars['DateTime']['output'];
+  createdAt: Scalars['Date']['output'];
   email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];

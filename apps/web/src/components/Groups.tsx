@@ -1,7 +1,7 @@
+import type { ChatRoom } from "@/__generated__/graphql";
 import { useMutation } from "@apollo/client";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import { Room } from "types/room.type";
 
 import { CREATE_ROOM } from "@/http/room";
 
@@ -19,9 +19,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 interface GroupsProps {
-  rooms: Room[];
+  rooms: ChatRoom[] | undefined;
   // eslint-disable-next-line no-unused-vars
-  setSelectedRoom: (room: Room) => void;
+  setSelectedRoom: (room: ChatRoom) => void;
 }
 
 export const Groups: React.FC<Readonly<GroupsProps>> = ({ rooms, setSelectedRoom }) => {
@@ -40,7 +40,7 @@ export const Groups: React.FC<Readonly<GroupsProps>> = ({ rooms, setSelectedRoom
         },
       },
     }).then(({ data }) => {
-      setSelectedRoom(data.createRoom);
+      if (data?.createRoom) return setSelectedRoom(data.createRoom);
     });
 
     setIsOpen(false);
@@ -79,7 +79,7 @@ export const Groups: React.FC<Readonly<GroupsProps>> = ({ rooms, setSelectedRoom
         </Dialog>
       </div>
       <div className="flex flex-col gap-4 mt-4">
-        {rooms?.map((room: Room) => (
+        {rooms?.map((room: ChatRoom) => (
           <Button
             key={room.id}
             variant="outline"

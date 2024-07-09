@@ -1,9 +1,9 @@
 "use client";
 
+import type { ChatRoom } from "@/__generated__/graphql";
 import { useQuery } from "@apollo/client";
 import { UserResource } from "@clerk/types";
 import { useState } from "react";
-import { Room } from "types/room.type";
 
 import { GET_USERROOMS } from "@/http/room";
 
@@ -12,14 +12,14 @@ import { Chat } from "@/components/Chat";
 import { Sidebar } from "@/components/Sidebar";
 
 function Home({ user }: Readonly<{ user: UserResource }>) {
-  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
+  const [selectedRoom, setSelectedRoom] = useState<ChatRoom | null>(null);
   const { data: rooms, loading } = useQuery(GET_USERROOMS);
 
   if (loading) return <p>Loading...</p>;
 
   return (
     <div className="grid min-h-screen w-full grid-cols-[280px_1fr] overflow-hidden">
-      <Sidebar user={user} rooms={rooms.getUserRooms} setSelectedRoom={(room: Room) => setSelectedRoom(room)} />
+      <Sidebar user={user} rooms={rooms?.getUserRooms} setSelectedRoom={(room: ChatRoom) => setSelectedRoom(room)} />
       {selectedRoom ? <Chat room={selectedRoom} /> : <p>No room</p>}
     </div>
   );

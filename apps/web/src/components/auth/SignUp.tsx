@@ -37,7 +37,7 @@ export const SignUp: React.FC<Readonly<SignInProps>> = ({ setShowSignUp }: { set
       console.log(result);
       if (result.status === "complete") {
         console.log("Sign up successful");
-        // window.location.reload();
+        window.location.reload();
       } else {
         setError("Error during sign up");
       }

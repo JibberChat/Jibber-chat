@@ -1,6 +1,7 @@
-import { DoorClosed, DoorOpen, Plus } from "lucide-react";
+import type { ChatRoom } from "@/__generated__/graphql";
+import { useMutation } from "@apollo/client";
+import { DoorOpen, Plus } from "lucide-react";
 import React from "react";
-import { Room } from "types/room.type";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
@@ -9,15 +10,18 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
+import { LEAVE_ROOM } from "@/http/room";
+
 interface ChatHeaderProps {
-  room: Room;
+  room: ChatRoom;
 }
 
 export const ChatHeader = ({ room }: Readonly<ChatHeaderProps>) => {
+  const [leaveRoom] = useMutation(LEAVE_ROOM);
+
   return (
     <div className="flex h-[60px] items-center justify-between border-b bg-muted/40 px-6">
       <div className="flex items-center gap-3">
@@ -35,17 +39,16 @@ export const ChatHeader = ({ room }: Readonly<ChatHeaderProps>) => {
           <Button variant="outline">Settings</Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
-          {/* <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator /> */}
           <DropdownMenuGroup>
             <DropdownMenuItem>
               <Plus className="mr-2" />
               Invite people
             </DropdownMenuItem>
           </DropdownMenuGroup>
-          {/* <DropdownMenuSeparator /> */}
           <DropdownMenuGroup>
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => leaveRoom({ variables: { input: { id: room.id } } }).then(() => window.location.reload())}
+            >
               <DoorOpen className="mr-2" />
               Leave room
             </DropdownMenuItem>
