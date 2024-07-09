@@ -22,9 +22,20 @@ export const GET_USER_PROFILE = gql(`
   }
 `);
 
+export const CREATE_USER = gql(`
+  mutation createUser($input: CreateUserInput!) {
+    createUser(createUserInput: $input) {
+      id
+      name
+      email
+      createdAt
+    }
+  }
+`);
+
 export const UPDATE_USER = gql(`
-  mutation updateUser($userId: String!, $name: String!, $email: String!) {
-    updateUser(userId: $userId, name: $name, email: $email) {
+  mutation updateUser($input: UpdateUserInput!) {
+    updateUser(updateUserInput: $input) {
       id
       name
       email

@@ -1,5 +1,8 @@
+import { useMutation } from "@apollo/client";
 import { useSignUp } from "@clerk/clerk-react";
 import { useState } from "react";
+
+import { CREATE_USER } from "@/http/user";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,8 +14,11 @@ interface SignInProps {
 
 export const SignUp: React.FC<Readonly<SignInProps>> = ({ setShowSignUp }: { setShowSignUp: () => void }) => {
   const { signUp, isLoaded } = useSignUp();
+
   const [verificationInProgress, setVerificationInProgress] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const [createUser] = useMutation(CREATE_USER);
 
   if (!isLoaded) {
     return null;
@@ -37,7 +43,16 @@ export const SignUp: React.FC<Readonly<SignInProps>> = ({ setShowSignUp }: { set
       console.log(result);
       if (result.status === "complete") {
         console.log("Sign up successful");
-        window.location.reload();
+        createUser({
+          variables: {
+            input: {
+              name: result.username as string,
+              email: result.emailAddress as string,
+            },
+          },
+        }).then(() => {
+          window.location.reload();
+        });
       } else {
         setError("Error during sign up");
       }

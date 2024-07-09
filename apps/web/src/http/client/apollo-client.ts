@@ -25,7 +25,6 @@ const authLink = setContext((_, { headers }) => {
 const wsLink = new GraphQLWsLink(
   createClient({
     url: "ws://localhost:4000/subscriptions",
-
     on: {
       connected: () => console.log("WebSocket connected"),
       error: (error) => console.error("WebSocket error", error),
@@ -53,7 +52,6 @@ export const getClient = () => {
       ssrForceFetchDelay: 100,
       link: splitLink,
       cache: new InMemoryCache(),
-      credentials: "include",
     });
   }
   return apolloClient;

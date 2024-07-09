@@ -24,7 +24,8 @@ const documents = {
     "\n  mutation leaveRoom($input: DeleteOrLeaveRoomInput!) {\n    leaveRoom(leaveRoomInput: $input) \n  }\n": types.LeaveRoomDocument,
     "\n  query getMe {\n    getMe {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n": types.GetMeDocument,
     "\n  query getUserProfile($userId: String!) {\n    getUserProfile(userId: $userId) {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n": types.GetUserProfileDocument,
-    "\n  mutation updateUser($userId: String!, $name: String!, $email: String!) {\n    updateUser(userId: $userId, name: $name, email: $email) {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n": types.UpdateUserDocument,
+    "\n  mutation createUser($input: CreateUserInput!) {\n    createUser(createUserInput: $input) {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n": types.CreateUserDocument,
+    "\n  mutation updateUser($input: UpdateUserInput!) {\n    updateUser(updateUserInput: $input) {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n": types.UpdateUserDocument,
 };
 
 /**
@@ -88,7 +89,11 @@ export function gql(source: "\n  query getUserProfile($userId: String!) {\n    g
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation updateUser($userId: String!, $name: String!, $email: String!) {\n    updateUser(userId: $userId, name: $name, email: $email) {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n"): (typeof documents)["\n  mutation updateUser($userId: String!, $name: String!, $email: String!) {\n    updateUser(userId: $userId, name: $name, email: $email) {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n"];
+export function gql(source: "\n  mutation createUser($input: CreateUserInput!) {\n    createUser(createUserInput: $input) {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n"): (typeof documents)["\n  mutation createUser($input: CreateUserInput!) {\n    createUser(createUserInput: $input) {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation updateUser($input: UpdateUserInput!) {\n    updateUser(updateUserInput: $input) {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n"): (typeof documents)["\n  mutation updateUser($input: UpdateUserInput!) {\n    updateUser(updateUserInput: $input) {\n      id\n      name\n      email\n      createdAt\n    }\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};
