@@ -15,8 +15,10 @@ export const AuthGuard: React.FC<Readonly<AuthGuardProps>> = <T extends object>(
   render: InnerComponent,
   props,
 }: Readonly<AuthGuardProps<T>>) => {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
   const [showSignUp, setShowSignUp] = useState(false);
+
+  if (!isLoaded) return null;
 
   if (!user) {
     return (
@@ -30,9 +32,9 @@ export const AuthGuard: React.FC<Readonly<AuthGuardProps>> = <T extends object>(
             )}
           </div>
         </div>
-        <div className="hidden bg-muted lg:block">
+        <div className="hidden bg-muted lg:block overflow-hidden">
           <Image
-            src="/placeholder.svg"
+            src="/splash.png"
             alt="Image"
             width="1920"
             height="1080"

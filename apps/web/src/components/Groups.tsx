@@ -40,7 +40,9 @@ export const Groups: React.FC<Readonly<GroupsProps>> = ({ rooms, setSelectedRoom
         },
       },
     }).then(({ data }) => {
-      if (data?.createRoom) return setSelectedRoom(data.createRoom);
+      if (data?.createRoom) {
+        return window.location.reload();
+      }
     });
 
     setIsOpen(false);

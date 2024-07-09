@@ -26,9 +26,6 @@ export const Sidebar = ({ user, rooms, setSelectedRoom }: Readonly<SidebarProps>
   return (
     <div className="flex flex-col border-r bg-muted/40">
       <div className="flex h-[60px] items-center border-b px-6">
-        {/* <Link href="#" className="flex items-center gap-2 font-semibold" prefetch={false}>
-          <span>Jibber App</span>
-        </Link> */}
         <DropdownMenu>
           <DropdownMenuTrigger className="h-[100%] flex items-center relative">
             <Avatar className="mr-2">
