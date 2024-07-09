@@ -24,6 +24,7 @@ export const Chat: React.FC<Readonly<ChatProps>> = ({ room }) => {
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
         const newMessage = subscriptionData.data.userJoinedRoom;
+        console.log(newMessage);
         return {
           getRoomMessages: [
             ...prev.getRoomMessages,

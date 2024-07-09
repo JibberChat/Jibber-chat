@@ -5,6 +5,7 @@ export const GET_ROOMMESSAGES = gql(`
     getRoomMessages(roomId: $roomId) {
       id
       text
+      createdAt
       user {
         name
       }
@@ -17,6 +18,10 @@ export const SEND_MESSAGE = gql(`
     sendMessage(roomId: $roomId, message: $message) {
       id
       text
+      createdAt
+      user {
+        name
+      }
     }
   }
 `);
@@ -26,6 +31,10 @@ export const ON_MESSAGE_ADDED = gql(`
     userJoinedRoom(roomId: $roomId) {
       id
       text
+      createdAt
+      user {
+        name
+      }
     }
   }
 `);
