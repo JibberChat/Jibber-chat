@@ -18,8 +18,8 @@ function Home({ user }: Readonly<{ user: UserResource }>) {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="grid min-h-screen w-full grid-cols-[280px_1fr]">
-      <Sidebar rooms={rooms.getUserRooms} setSelectedRoom={(room: Room) => setSelectedRoom(room)} />
+    <div className="grid min-h-screen w-full grid-cols-[280px_1fr] overflow-hidden">
+      <Sidebar user={user} rooms={rooms.getUserRooms} setSelectedRoom={(room: Room) => setSelectedRoom(room)} />
       {selectedRoom ? <Chat room={selectedRoom} /> : <p>No room</p>}
     </div>
   );

@@ -35,26 +35,22 @@ export const Chat: React.FC<Readonly<ChatProps>> = ({ room }) => {
   }, []);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col overflow-hidden h-screen">
       <ChatHeader room={room} />
-      {/* <ChatMessages /> */}
-      <div className="flex-1 overflow-auto p-6">
-        <div className="grid gap-4">
-          {data?.getRoomMessages.map(
-            ({ id, text, user }: { id: string; text: string; user: { name: string }; me: boolean }, index: number) => (
-              <ChatMessage
-                key={id}
-                message={text}
-                sender={user}
-                time={new Date()}
-                avatarSrc={""}
-                isMe={index % 2 === 0}
-              />
-            )
-          )}
-        </div>
+      <div className="overflow-y-auto p-6 flex flex-col h-full">
+        {data?.getRoomMessages.map(
+          ({ id, text, user }: { id: string; text: string; user: { name: string }; me: boolean }, index: number) => (
+            <ChatMessage
+              key={id}
+              message={text}
+              sender={user}
+              time={new Date()}
+              avatarSrc={""}
+              isMe={index % 2 === 0}
+            />
+          )
+        )}
       </div>
-
       <ChatInput sendMessage={(message: string) => sendMessage({ variables: { roomId: room.id, message } })} />
     </div>
   );

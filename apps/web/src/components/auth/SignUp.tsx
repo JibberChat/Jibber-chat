@@ -18,7 +18,42 @@ export const SignUp: React.FC<Readonly<SignInProps>> = ({ setShowSignUp }: { set
     return null;
   }
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitCode = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+
+    const form = e.currentTarget;
+    const code = form.code?.value;
+
+    if (!code) {
+      setError("Verification code is required");
+      return;
+    }
+
+    try {
+      const result = await signUp.attemptEmailAddressVerification({
+        code,
+      });
+      console.log(result);
+      if (result.status === "complete") {
+        console.log("Sign up successful");
+        // window.location.reload();
+      } else {
+        setError("Error during sign up");
+      }
+    } catch (err) {
+      console.error("Error during sign up", err);
+      // @ts-ignore
+      if (err?.errors instanceof Array) {
+        // @ts-ignore
+        setError(err.errors[0].message);
+      } else {
+        setError("An error occurred while sending the verification code");
+      }
+    }
+  };
+
+  const handleSubmitUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
 
@@ -27,51 +62,27 @@ export const SignUp: React.FC<Readonly<SignInProps>> = ({ setShowSignUp }: { set
     const username = form.firstName?.value;
     const password = form.password?.value;
 
-    if (verificationInProgress) {
-      const code = form.code?.value;
-      if (!code) {
-        setError("Verification code is required");
-        return;
-      }
+    if (!email || !username || !password) {
+      setError("All fields are required");
+      return;
+    }
 
-      try {
-        const result = await signUp.attemptEmailAddressVerification({
-          code,
-        });
-        console.log(result);
-        if (result.status === "complete") {
-          console.log("Sign up successful");
-          window.location.reload();
-        } else {
-          setError("Error during sign up");
-        }
-      } catch (err) {
-        console.error("Error during sign up", err);
-        setError("An error occurred during sign up");
-      }
-    } else {
-      if (!email || !username || !password) {
-        setError("All fields are required");
-        return;
-      }
-
-      try {
-        await signUp.create({
-          emailAddress: email,
-          username,
-          password,
-        });
-        await signUp.prepareEmailAddressVerification();
-        setVerificationInProgress(true);
-      } catch (err: unknown) {
-        console.error("Error sending verification code", err);
+    try {
+      await signUp.create({
+        emailAddress: email,
+        username,
+        password,
+      });
+      await signUp.prepareEmailAddressVerification();
+      setVerificationInProgress(true);
+    } catch (err: unknown) {
+      console.error("Error sending verification code", err);
+      // @ts-ignore
+      if (err?.errors instanceof Array) {
         // @ts-ignore
-        if (err?.errors instanceof Array) {
-          // @ts-ignore
-          setError(err.errors[0].message);
-        } else {
-          setError("An error occurred while sending the verification code");
-        }
+        setError(err.errors[0].message);
+      } else {
+        setError("An error occurred while sending the verification code");
       }
     }
   };
@@ -82,7 +93,7 @@ export const SignUp: React.FC<Readonly<SignInProps>> = ({ setShowSignUp }: { set
         <h1 className="text-3xl font-bold">Create an account</h1>
         <p className="text-balance text-muted-foreground">Enter your email below to create your account</p>
       </div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => (verificationInProgress ? handleSubmitCode(e) : handleSubmitUser(e))}>
         <div className="grid gap-4">
           {verificationInProgress ? (
             <div className="grid gap-2">
