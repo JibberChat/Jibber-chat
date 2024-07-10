@@ -12,6 +12,7 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Input } from "../ui/input";
@@ -70,18 +71,19 @@ export const ChatHeader = ({ room }: Readonly<ChatHeaderProps>) => {
               Invite people
             </DropdownMenuItem>
           </DropdownMenuGroup>
-          <DropdownMenuGroup>
-            <DropdownMenuItem
-              onClick={() => leaveRoom({ variables: { input: { roomId: room.id } } }).then(() => window.location.reload())}
-            >
-              <DoorOpen className="mr-2" />
-              Leave room
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem onClick={() => setIsOpen(true)}>
               <Edit className="mr-2" />
               Edit Room
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() =>
+                leaveRoom({ variables: { input: { roomId: room.id } } }).then(() => window.location.reload())
+              }
+            >
+              <DoorOpen className="mr-2" />
+              Leave room
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
