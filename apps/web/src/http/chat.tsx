@@ -7,6 +7,7 @@ export const GET_ROOMMESSAGES = gql(`
       text
       createdAt
       user {
+        id
         name
       }
     }
@@ -20,6 +21,7 @@ export const SEND_MESSAGE = gql(`
       text
       createdAt
       user {
+        id
         name
       }
     }
@@ -33,6 +35,7 @@ export const ON_MESSAGE_ADDED = gql(`
       text
       createdAt
       user {
+        id
         name
       }
     }
