@@ -1,8 +1,7 @@
 "use client";
 
-import type { ChatRoom } from "@/__generated__/graphql";
+import type { ChatRoom, GetMeQuery } from "@/__generated__/graphql";
 import { useQuery } from "@apollo/client";
-import { UserResource } from "@clerk/types";
 import { useState } from "react";
 
 import { GET_USERROOMS } from "@/http/room";
@@ -11,9 +10,11 @@ import { AuthGuard } from "@/components/AuthGuard";
 import { Chat } from "@/components/Chat";
 import { Sidebar } from "@/components/Sidebar";
 
-function Home({ user }: Readonly<{ user: UserResource }>) {
+function Home({ user }: Readonly<{ user: GetMeQuery["getMe"] }>) {
   const [selectedRoom, setSelectedRoom] = useState<ChatRoom | null>(null);
   const { data: rooms, loading } = useQuery(GET_USERROOMS);
+
+  console.log(user);
 
   if (loading) return <p>Loading...</p>;
 

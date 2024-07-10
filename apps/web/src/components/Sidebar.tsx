@@ -1,6 +1,5 @@
-import type { ChatRoom } from "@/__generated__/graphql";
+import type { ChatRoom, GetMeQuery } from "@/__generated__/graphql";
 import { useAuth } from "@clerk/clerk-react";
-import type { UserResource } from "@clerk/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { LogOut } from "lucide-react";
 import React from "react";
@@ -15,7 +14,7 @@ import {
 } from "./ui/dropdown-menu";
 
 interface SidebarProps {
-  user: UserResource;
+  user: GetMeQuery["getMe"];
   rooms: ChatRoom[] | undefined;
   // eslint-disable-next-line no-unused-vars
   setSelectedRoom: (room: ChatRoom) => void;
@@ -29,10 +28,10 @@ export const Sidebar = ({ user, rooms, setSelectedRoom }: Readonly<SidebarProps>
         <DropdownMenu>
           <DropdownMenuTrigger className="h-[100%] flex items-center relative">
             <Avatar className="mr-2">
-              <AvatarImage src={user.imageUrl} className="rounded-full w-8 h-8" />
-              <AvatarFallback>{user.username?.slice(0, 2)}</AvatarFallback>
+              {/* <AvatarImage src={user.imageUrl} className="rounded-full w-8 h-8" /> */}
+              <AvatarFallback>{user.name?.slice(0, 2)}</AvatarFallback>
             </Avatar>
-            <p>{user.username}</p>
+            <p>{user.name}</p>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuGroup>

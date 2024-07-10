@@ -1,26 +1,26 @@
-import { useUser } from "@clerk/clerk-react";
-import type { UserResource } from "@clerk/types";
+import { GetMeQuery } from "@/__generated__/graphql";
+import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import { useState } from "react";
 
 import { SignIn } from "./auth/SignIn";
 import { SignUp } from "./auth/SignUp";
 
+import { GET_ME } from "@/http/user";
+
 type AuthGuardProps<T extends object = {}> = {
-  render: React.FC<{ user: UserResource } & T>;
+  render: React.FC<{ user: GetMeQuery["getMe"] } & T>;
   props?: T;
 };
 
-export const AuthGuard: React.FC<Readonly<AuthGuardProps>> = <T extends object>({
-  render: InnerComponent,
-  props,
-}: Readonly<AuthGuardProps<T>>) => {
-  const { user, isLoaded } = useUser();
+export const AuthGuard = <T extends object>({ render: InnerComponent, props }: Readonly<AuthGuardProps<T>>) => {
+  const { data: me, loading } = useQuery(GET_ME);
+
   const [showSignUp, setShowSignUp] = useState(false);
 
-  if (!isLoaded) return null;
+  if (loading) return null;
 
-  if (!user) {
+  if (!me) {
     return (
       <div className="w-full h-screen overflow-hidden lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
         <div className="flex items-center justify-center py-12">
@@ -45,5 +45,5 @@ export const AuthGuard: React.FC<Readonly<AuthGuardProps>> = <T extends object>(
     );
   }
 
-  return <InnerComponent user={user} {...(props as T)} />;
+  return <InnerComponent user={me.getMe} {...(props as T)} />;
 };
