@@ -1,4 +1,5 @@
 import type { ChatRoom } from "@/__generated__/graphql";
+import { useRooms } from "@/contexts/RoomsContext";
 import { useMutation } from "@apollo/client";
 import { DoorOpen, Edit, Plus } from "lucide-react";
 import React, { useState } from "react";
@@ -16,37 +17,28 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
-import { INVITE_USER_TO_ROOM, LEAVE_ROOM, UPDATE_ROOM } from "@/http/room";
+import { INVITE_USER_TO_ROOM } from "@/http/room";
 
 interface ChatHeaderProps {
   room: ChatRoom;
 }
 
 export const ChatHeader = ({ room }: Readonly<ChatHeaderProps>) => {
-  const [leaveRoom] = useMutation(LEAVE_ROOM);
-  const [editRoom] = useMutation(UPDATE_ROOM);
+  const { leaveRoomById, updateRoomById } = useRooms();
+
   const [inviteUserToRoom] = useMutation(INVITE_USER_TO_ROOM);
 
   const [isOpenEditRoom, setIsOpenEditRoom] = useState(false);
   const [isOpenInviteUser, setIsOpenInviteUser] = useState(false);
 
-  const handleEditRoom = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleEditRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const name = e.currentTarget.roomName?.value;
     if (!name) return;
 
-    editRoom({
-      variables: {
-        input: {
-          roomId: room.id,
-          name,
-        },
-      },
-    }).then(({ data }) => {
-      if (data?.updateRoom) {
-        return window.location.reload();
-      }
-    });
+    await updateRoomById({ name, roomId: room.id });
+
+    setIsOpenEditRoom(false);
   };
 
   const handleInviteUser = (e: React.FormEvent<HTMLFormElement>) => {
@@ -99,7 +91,8 @@ export const ChatHeader = ({ room }: Readonly<ChatHeaderProps>) => {
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() =>
-                leaveRoom({ variables: { input: { roomId: room.id } } }).then(() => window.location.reload())
+                // leaveRoom({ variables: { input: { roomId: room.id } } }).then(() => window.location.reload())
+                leaveRoomById({ roomId: room.id })
               }
             >
               <DoorOpen className="mr-2" />

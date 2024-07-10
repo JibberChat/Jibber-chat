@@ -1,9 +1,7 @@
 import type { ChatRoom } from "@/__generated__/graphql";
-import { useMutation } from "@apollo/client";
+import { useRooms } from "@/contexts/RoomsContext";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-
-import { CREATE_ROOM } from "@/http/room";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -25,25 +23,15 @@ interface GroupsProps {
 }
 
 export const Groups: React.FC<Readonly<GroupsProps>> = ({ rooms, setSelectedRoom }) => {
-  const [createRoom] = useMutation(CREATE_ROOM);
+  const { createNewRoom } = useRooms();
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleCreateRoom = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleCreateRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const name = e.currentTarget.roomName?.value;
     if (!name) return;
 
-    createRoom({
-      variables: {
-        input: {
-          name,
-        },
-      },
-    }).then(({ data }) => {
-      if (data?.createRoom) {
-        return window.location.reload();
-      }
-    });
+    await createNewRoom({ name });
 
     setIsOpen(false);
   };

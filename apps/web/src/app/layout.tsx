@@ -1,3 +1,4 @@
+import { RoomsProvider } from "@/contexts/RoomsContext";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
@@ -27,11 +28,13 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body className={`${geistSans.variable} ${geistMono.variable}`}>
-          <ApolloWrapper>{children}</ApolloWrapper>
-        </body>
-      </html>
+      <ApolloWrapper>
+        <RoomsProvider>
+          <html lang="en">
+            <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
+          </html>
+        </RoomsProvider>
+      </ApolloWrapper>
     </ClerkProvider>
   );
 }
