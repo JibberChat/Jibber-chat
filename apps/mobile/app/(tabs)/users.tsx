@@ -1,3 +1,4 @@
+import React from "react";
 import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import Card from "@/components/ui/Card";
@@ -6,7 +7,7 @@ import Input from "@/components/ui/Input";
 export default function HomeScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Input placeholder="Search room..." />
+      <Input placeholder="Search users..." />
       <ScrollView style={{ flex: 1, padding: 16 }}>
         <Card>
           <Image
@@ -15,7 +16,9 @@ export default function HomeScreen() {
           />
           <View>
             <Text style={styles.name}>John Doe</Text>
-            <Text style={styles.infos}>10 users</Text>
+            <Text>
+              <View style={styles.status} /> Online
+            </Text>
           </View>
         </Card>
       </ScrollView>
@@ -33,7 +36,10 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 18,
   },
-  infos: {
-    fontStyle: "italic",
+  status: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: "green",
   },
 });
