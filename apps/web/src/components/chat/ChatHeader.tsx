@@ -1,12 +1,12 @@
 import type { ChatRoom } from "@/__generated__/graphql";
 import { useMutation } from "@apollo/client";
-import { Label } from "@radix-ui/react-label";
 import { DoorOpen, Edit, Plus } from "lucide-react";
 import React, { useState } from "react";
 
+import EditRoom from "../dialogs/EditRoom";
+import InviteUserToRoom from "../dialogs/InviteUserToRoom";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,9 +15,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Input } from "../ui/input";
 
-import { LEAVE_ROOM, UPDATE_ROOM } from "@/http/room";
+import { INVITE_USER_TO_ROOM, LEAVE_ROOM, UPDATE_ROOM } from "@/http/room";
 
 interface ChatHeaderProps {
   room: ChatRoom;
@@ -26,7 +25,10 @@ interface ChatHeaderProps {
 export const ChatHeader = ({ room }: Readonly<ChatHeaderProps>) => {
   const [leaveRoom] = useMutation(LEAVE_ROOM);
   const [editRoom] = useMutation(UPDATE_ROOM);
-  const [isOpen, setIsOpen] = useState(false);
+  const [inviteUserToRoom] = useMutation(INVITE_USER_TO_ROOM);
+
+  const [isOpenEditRoom, setIsOpenEditRoom] = useState(false);
+  const [isOpenInviteUser, setIsOpenInviteUser] = useState(false);
 
   const handleEditRoom = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,9 +47,27 @@ export const ChatHeader = ({ room }: Readonly<ChatHeaderProps>) => {
         return window.location.reload();
       }
     });
-
-    setIsOpen(false);
   };
+
+  const handleInviteUser = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const userEmail = e.currentTarget.userEmail.value;
+    if (!userEmail.trim()) return;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(userEmail)) return;
+
+    inviteUserToRoom({
+      variables: {
+        input: {
+          roomId: room.id,
+          userEmail,
+        },
+      },
+    }).then(() => {
+      setIsOpenInviteUser(false);
+    });
+  };
+
   return (
     <div className="flex h-[60px] items-center justify-between border-b bg-muted/40 px-6">
       <div className="flex items-center gap-3">
@@ -66,14 +86,14 @@ export const ChatHeader = ({ room }: Readonly<ChatHeaderProps>) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
           <DropdownMenuGroup>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setIsOpenInviteUser(true)}>
               <Plus className="mr-2" />
               Invite people
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => setIsOpen(true)}>
+            <DropdownMenuItem onClick={() => setIsOpenEditRoom(true)}>
               <Edit className="mr-2" />
               Edit Room
             </DropdownMenuItem>
@@ -88,27 +108,8 @@ export const ChatHeader = ({ room }: Readonly<ChatHeaderProps>) => {
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Edit room</DialogTitle>
-            <DialogDescription>Change the name of the room here.</DialogDescription>
-          </DialogHeader>
-          <form onSubmit={handleEditRoom}>
-            <div className="grid gap-4 py-4">
-              <div className="grid items-center grid-cols-4 gap-4">
-                <Label htmlFor="roomName" className="text-right">
-                  Name
-                </Label>
-                <Input id="roomName" name="roomName" placeholder="Room name" className="col-span-3" />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button type="submit">Save changes</Button>
-            </DialogFooter>
-          </form>
-        </DialogContent>
-      </Dialog>
+      <EditRoom isOpen={isOpenEditRoom} setIsOpen={setIsOpenEditRoom} handleEditRoom={handleEditRoom} />
+      <InviteUserToRoom isOpen={isOpenInviteUser} setIsOpen={setIsOpenInviteUser} handleInviteUser={handleInviteUser} />
     </div>
   );
 };

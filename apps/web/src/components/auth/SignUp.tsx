@@ -16,7 +16,9 @@ export const SignUp: React.FC<Readonly<SignInProps>> = ({ setShowSignUp }: { set
   const { signUp, isLoaded } = useSignUp();
 
   const [verificationInProgress, setVerificationInProgress] = useState(false);
+  const [loadingCode, setLoadingCode] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [username, setUsername] = useState("");
 
   const [createUser] = useMutation(CREATE_USER);
 
@@ -27,37 +29,34 @@ export const SignUp: React.FC<Readonly<SignInProps>> = ({ setShowSignUp }: { set
   const handleSubmitCode = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
+    setLoadingCode(true);
 
     const form = e.currentTarget;
     const code = form.code?.value;
 
-    if (!code) {
-      setError("Verification code is required");
-      return;
-    }
+    if (!code) return setError("Verification code is required");
 
     try {
-      const result = await signUp.attemptEmailAddressVerification({
-        code,
-      });
-      console.log(result);
+      const result = await signUp.attemptEmailAddressVerification({ code });
       if (result.status === "complete") {
-        console.log("Sign up successful");
-        createUser({
+        await createUser({
           variables: {
             input: {
-              name: result.username as string,
+              name: username,
               email: result.emailAddress as string,
             },
           },
-        }).then(() => {
-          window.location.reload();
         });
+
+        console.log("Sign up successful");
+        setLoadingCode(false);
+        window.location.reload();
       } else {
+        setLoadingCode(false);
         setError("Error during sign up");
       }
     } catch (err) {
-      console.error("Error during sign up", err);
+      setLoadingCode(false);
       // @ts-ignore
       if (err?.errors instanceof Array) {
         // @ts-ignore
@@ -85,9 +84,10 @@ export const SignUp: React.FC<Readonly<SignInProps>> = ({ setShowSignUp }: { set
     try {
       await signUp.create({
         emailAddress: email,
-        username,
         password,
       });
+      setUsername(username);
+
       await signUp.prepareEmailAddressVerification();
       setVerificationInProgress(true);
     } catch (err: unknown) {
@@ -111,10 +111,22 @@ export const SignUp: React.FC<Readonly<SignInProps>> = ({ setShowSignUp }: { set
       <form onSubmit={(e) => (verificationInProgress ? handleSubmitCode(e) : handleSubmitUser(e))}>
         <div className="grid gap-4">
           {verificationInProgress ? (
-            <div className="grid gap-2">
-              <Label htmlFor="code">Verification code</Label>
-              <Input id="code" name="code" type="text" placeholder="Enter verification code" required />
-            </div>
+            <>
+              <div className="grid gap-2">
+                <Label htmlFor="code">Verification code</Label>
+                <Input
+                  id="code"
+                  name="code"
+                  type="text"
+                  placeholder="Enter verification code"
+                  required
+                  disabled={loadingCode}
+                />
+              </div>
+              <button type="button" onClick={() => signUp.prepareEmailAddressVerification()}>
+                Resend code
+              </button>
+            </>
           ) : (
             <>
               <div className="grid gap-2">
@@ -132,7 +144,7 @@ export const SignUp: React.FC<Readonly<SignInProps>> = ({ setShowSignUp }: { set
             </>
           )}
           {error && <div className="text-red-500">{error}</div>}
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" disabled={loadingCode}>
             {verificationInProgress ? "Verify code" : "Sign up"}
           </Button>
         </div>

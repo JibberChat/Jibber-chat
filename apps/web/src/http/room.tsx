@@ -18,6 +18,12 @@ export const GET_UNREAD_USERROOMS = gql(`
   }
 `);
 
+export const INVITE_USER_TO_ROOM = gql(`
+  mutation inviteUserToRoom($input: InviteUserToRoomInput!) {
+    inviteUserToRoom(inviteUserToRoomInput: $input) 
+  }
+`);
+
 export const CREATE_ROOM = gql(`
   mutation createRoom($input: CreateRoomInput!) {
     createRoom(createRoomInput: $input) {

@@ -18,6 +18,7 @@ const documents = {
     "\n  subscription userJoinedRoom($roomId: String!) {\n    userJoinedRoom(roomId: $roomId) {\n      id\n      text\n      createdAt\n      user {\n        id\n        name\n      }\n    }\n  }\n": types.UserJoinedRoomDocument,
     "\n  query getUserRooms {\n    getUserRooms {\n      id\n      name\n    }\n  }\n": types.GetUserRoomsDocument,
     "\n  query getUnreadUserRooms {\n    getUnreadUserRooms {\n      id\n      name\n    }\n  }\n": types.GetUnreadUserRoomsDocument,
+    "\n  mutation inviteUserToRoom($input: InviteUserToRoomInput!) {\n    inviteUserToRoom(inviteUserToRoomInput: $input) \n  }\n": types.InviteUserToRoomDocument,
     "\n  mutation createRoom($input: CreateRoomInput!) {\n    createRoom(createRoomInput: $input) {\n      id\n      name\n    }\n  }\n": types.CreateRoomDocument,
     "\n  mutation updateRoom($input: UpdateRoomInput!) {\n    updateRoom(updateRoomInput: $input) {\n      id\n      name\n    }\n  }\n": types.UpdateRoomDocument,
     "\n  mutation deleteRoom($input: DeleteOrLeaveRoomInput!) {\n    deleteRoom(deleteRoomInput: $input)\n  }\n": types.DeleteRoomDocument,
@@ -62,6 +63,10 @@ export function gql(source: "\n  query getUserRooms {\n    getUserRooms {\n     
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query getUnreadUserRooms {\n    getUnreadUserRooms {\n      id\n      name\n    }\n  }\n"): (typeof documents)["\n  query getUnreadUserRooms {\n    getUnreadUserRooms {\n      id\n      name\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation inviteUserToRoom($input: InviteUserToRoomInput!) {\n    inviteUserToRoom(inviteUserToRoomInput: $input) \n  }\n"): (typeof documents)["\n  mutation inviteUserToRoom($input: InviteUserToRoomInput!) {\n    inviteUserToRoom(inviteUserToRoomInput: $input) \n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
