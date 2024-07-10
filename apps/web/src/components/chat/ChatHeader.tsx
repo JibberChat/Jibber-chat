@@ -72,7 +72,7 @@ export const ChatHeader = ({ room }: Readonly<ChatHeaderProps>) => {
           </DropdownMenuGroup>
           <DropdownMenuGroup>
             <DropdownMenuItem
-              onClick={() => leaveRoom({ variables: { input: { id: room.id } } }).then(() => window.location.reload())}
+              onClick={() => leaveRoom({ variables: { input: { roomId: room.id } } }).then(() => window.location.reload())}
             >
               <DoorOpen className="mr-2" />
               Leave room
