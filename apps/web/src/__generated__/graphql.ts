@@ -42,7 +42,7 @@ export type CreateUserInput = {
 };
 
 export type DeleteOrLeaveRoomInput = {
-  id: Scalars['ID']['input'];
+  roomId: Scalars['ID']['input'];
 };
 
 export type Mutation = {
@@ -123,8 +123,8 @@ export type SubscriptionUserJoinedRoomArgs = {
 };
 
 export type UpdateRoomInput = {
-  id: Scalars['ID']['input'];
   name: Scalars['String']['input'];
+  roomId: Scalars['ID']['input'];
 };
 
 export type UpdateUserInput = {

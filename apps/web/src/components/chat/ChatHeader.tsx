@@ -1,10 +1,12 @@
 import type { ChatRoom } from "@/__generated__/graphql";
 import { useMutation } from "@apollo/client";
+import { Label } from "@radix-ui/react-label";
 import { DoorOpen, Edit, Plus } from "lucide-react";
 import React, { useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,11 +14,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Input } from "../ui/input";
 
 import { LEAVE_ROOM, UPDATE_ROOM } from "@/http/room";
-import { Label } from "@radix-ui/react-label";
-import { Input } from "../ui/input";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 
 interface ChatHeaderProps {
   room: ChatRoom;
@@ -27,16 +27,15 @@ export const ChatHeader = ({ room }: Readonly<ChatHeaderProps>) => {
   const [editRoom] = useMutation(UPDATE_ROOM);
   const [isOpen, setIsOpen] = useState(false);
 
-
   const handleEditRoom = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const name = e.currentTarget.roomName?.value;
-    if (!name ) return;
+    if (!name) return;
 
     editRoom({
       variables: {
         input: {
-          id: room.id,
+          roomId: room.id,
           name,
         },
       },
@@ -47,7 +46,7 @@ export const ChatHeader = ({ room }: Readonly<ChatHeaderProps>) => {
     });
 
     setIsOpen(false);
-  }
+  };
   return (
     <div className="flex h-[60px] items-center justify-between border-b bg-muted/40 px-6">
       <div className="flex items-center gap-3">
@@ -80,9 +79,7 @@ export const ChatHeader = ({ room }: Readonly<ChatHeaderProps>) => {
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuGroup>
-            <DropdownMenuItem
-              onClick={() => setIsOpen(true)}
-            >
+            <DropdownMenuItem onClick={() => setIsOpen(true)}>
               <Edit className="mr-2" />
               Edit Room
             </DropdownMenuItem>
