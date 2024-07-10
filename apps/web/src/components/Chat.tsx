@@ -1,4 +1,4 @@
-import type { ChatMessage as ChatMessageQuery, ChatRoom } from "@/__generated__/graphql";
+import type { ChatMessage as ChatMessageQuery, ChatRoom, GetMeQuery } from "@/__generated__/graphql";
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect } from "react";
 
@@ -10,9 +10,10 @@ import { GET_ROOMMESSAGES, ON_MESSAGE_ADDED, SEND_MESSAGE } from "@/http/chat";
 
 interface ChatProps {
   room: ChatRoom;
+  user: GetMeQuery["getMe"];
 }
 
-export const Chat: React.FC<Readonly<ChatProps>> = ({ room }) => {
+export const Chat: React.FC<Readonly<ChatProps>> = ({ room, user }) => {
   const { subscribeToMore, data } = useQuery(GET_ROOMMESSAGES, { variables: { roomId: room.id } });
 
   const [sendMessage] = useMutation(SEND_MESSAGE);
@@ -38,14 +39,14 @@ export const Chat: React.FC<Readonly<ChatProps>> = ({ room }) => {
         {data?.getRoomMessages
           ?.slice()
           .sort((a, b) => a.createdAt - b.createdAt)
-          .map(({ id, text, createdAt, user }: ChatMessageQuery, index: number) => (
+          .map(({ id, text, createdAt, user: userMessage }: ChatMessageQuery) => (
             <ChatMessage
               key={id}
               message={text}
-              sender={user}
+              sender={userMessage}
               date={new Date(createdAt)}
               avatarSrc={""}
-              isMe={index % 2 === 0}
+              isMe={userMessage.id === user.id}
             />
           ))}
       </div>

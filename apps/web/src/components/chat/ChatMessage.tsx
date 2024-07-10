@@ -1,9 +1,10 @@
+import { UserMessage } from "@/__generated__/graphql";
 import React from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 interface ChatMessageProps {
-  sender: { name: string };
+  sender: UserMessage;
   message: string;
   date: Date;
   avatarSrc: string;
