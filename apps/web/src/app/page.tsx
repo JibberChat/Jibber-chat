@@ -14,14 +14,12 @@ function Home({ user }: Readonly<{ user: GetMeQuery["getMe"] }>) {
   const [selectedRoom, setSelectedRoom] = useState<ChatRoom | null>(null);
   const { data: rooms, loading } = useQuery(GET_USERROOMS);
 
-  console.log(user);
-
   if (loading) return <p>Loading...</p>;
 
   return (
     <div className="grid min-h-screen w-full grid-cols-[280px_1fr] overflow-hidden">
       <Sidebar user={user} rooms={rooms?.getUserRooms} setSelectedRoom={(room: ChatRoom) => setSelectedRoom(room)} />
-      {selectedRoom ? <Chat room={selectedRoom} /> : <p>No room</p>}
+      {selectedRoom ? <Chat user={user} room={selectedRoom} /> : <p>No room</p>}
     </div>
   );
 }
