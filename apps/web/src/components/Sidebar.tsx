@@ -1,25 +1,25 @@
 import type { ChatRoom, GetMeQuery } from "@/__generated__/graphql";
+import { useMutation } from "@apollo/client";
 import { useAuth } from "@clerk/clerk-react";
-import {
-  Avatar, AvatarFallback,
-} from "@radix-ui/react-avatar";
+import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
 import { Edit, LogOut } from "lucide-react";
 import React, { useState } from "react";
 
 import { Groups } from "./Groups";
+import { Button } from "./ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { UPDATE_USER } from "@/http/user";
-import { useMutation } from "@apollo/client";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog";
-import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Label } from "./ui/label";
+
+import { UPDATE_USER } from "@/http/user";
 
 interface SidebarProps {
   user: GetMeQuery["getMe"];
@@ -28,23 +28,20 @@ interface SidebarProps {
   setSelectedRoom: (room: ChatRoom) => void;
 }
 
-export const Sidebar = ({ user, rooms, setSelectedRoom }: Readonly<SidebarProps>) => {
+export const Sidebar: React.FC<Readonly<SidebarProps>> = ({ user, rooms, setSelectedRoom }) => {
   const { signOut } = useAuth();
   const [editUser] = useMutation(UPDATE_USER);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleEditUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const name = e.currentTarget.name?.value;
-    console.log(name, "name edit");
-    if (!name) return;
-
-    console.log(user.id, "user id")
+    const name = (e.currentTarget.name as unknown as HTMLInputElement).value;
+    if (name.trim() === "") return;
 
     editUser({
       variables: {
         input: {
-          name,
+          name: name.trimStart(),
         },
       },
     }).then(({ data }) => {
@@ -52,10 +49,6 @@ export const Sidebar = ({ user, rooms, setSelectedRoom }: Readonly<SidebarProps>
         return window.location.reload();
       }
     });
-
-    console.log("edit user");
-
-    setIsOpen(false);
   };
   return (
     <div className="flex flex-col border-r bg-muted/40">
@@ -70,15 +63,14 @@ export const Sidebar = ({ user, rooms, setSelectedRoom }: Readonly<SidebarProps>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => signOut()}>
-                <LogOut className="mr-2" />
-                Sign out
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuGroup>
               <DropdownMenuItem onClick={() => setIsOpen(true)}>
                 <Edit className="mr-2" />
                 Edit Profile
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => signOut()}>
+                <LogOut className="mr-2" />
+                Sign out
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
