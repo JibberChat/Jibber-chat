@@ -64,7 +64,7 @@ export const ChatHeader = ({ room }: Readonly<ChatHeaderProps>) => {
         setIsOpenInviteUser(false);
       })
       .catch(() => {
-        toast.error("An error occurred");
+        toast.error("You can't invite this person");
       });
   };
 
