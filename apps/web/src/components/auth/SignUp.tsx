@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import { CREATE_USER } from "@/http/user";
 
+import { isSignError } from "@/lib/auth";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -57,10 +59,8 @@ export const SignUp: React.FC<Readonly<SignInProps>> = ({ setShowSignUp }: { set
       }
     } catch (err) {
       setLoadingCode(false);
-      // @ts-ignore
-      if (err?.errors instanceof Array) {
-        // @ts-ignore
-        setError(err.errors[0].message);
+      if (isSignError(err)) {
+        setError(err.errors?.[0]?.message || "An unknown error occurred");
       } else {
         setError("An error occurred while sending the verification code");
       }
@@ -72,30 +72,23 @@ export const SignUp: React.FC<Readonly<SignInProps>> = ({ setShowSignUp }: { set
     setError(null);
 
     const form = e.currentTarget;
-    const email = form.email?.value;
-    const username = form.firstName?.value;
-    const password = form.password?.value;
-
-    if (!email || !username || !password) {
-      setError("All fields are required");
-      return;
-    }
+    const emailInput = form.email?.value;
+    const usernameInput = form.firstName?.value;
+    const passwordInput = form.password?.value;
 
     try {
       await signUp.create({
-        emailAddress: email,
-        password,
+        emailAddress: emailInput,
+        password: passwordInput,
       });
-      setUsername(username);
+      setUsername(usernameInput);
 
       await signUp.prepareEmailAddressVerification();
       setVerificationInProgress(true);
     } catch (err: unknown) {
       console.error("Error sending verification code", err);
-      // @ts-ignore
-      if (err?.errors instanceof Array) {
-        // @ts-ignore
-        setError(err.errors[0].message);
+      if (isSignError(err)) {
+        setError(err.errors?.[0]?.message || "An unknown error occurred");
       } else {
         setError("An error occurred while sending the verification code");
       }

@@ -1,4 +1,4 @@
-import type { ChatRoom, GetMeQuery } from "@/__generated__/graphql";
+import type { GetMeQuery } from "@/__generated__/graphql";
 import { useMutation } from "@apollo/client";
 import { useAuth } from "@clerk/clerk-react";
 import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
@@ -6,8 +6,7 @@ import { Edit, LogOut } from "lucide-react";
 import React, { useState } from "react";
 
 import { Groups } from "./Groups";
-import { Button } from "./ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog";
+import EditProfile from "./dialogs/EditProfile";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,24 +15,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
 
 import { UPDATE_USER } from "@/http/user";
 
 interface SidebarProps {
   user: GetMeQuery["getMe"];
-  rooms: ChatRoom[] | undefined;
-  // eslint-disable-next-line no-unused-vars
-  setSelectedRoom: (room: ChatRoom) => void;
 }
 
-export const Sidebar: React.FC<Readonly<SidebarProps>> = ({ user, rooms, setSelectedRoom }) => {
+export const Sidebar: React.FC<Readonly<SidebarProps>> = ({ user }) => {
   const { signOut } = useAuth();
   const [editUser] = useMutation(UPDATE_USER);
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleEditUser = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleEditProfile = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const name = (e.currentTarget.name as unknown as HTMLInputElement).value;
     if (name.trim() === "") return;
@@ -75,33 +69,11 @@ export const Sidebar: React.FC<Readonly<SidebarProps>> = ({ user, rooms, setSele
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Edit name</DialogTitle>
-              <DialogDescription>Change the name</DialogDescription>
-            </DialogHeader>
-            <form onSubmit={handleEditUser}>
-              <div className="grid gap-4 py-4">
-                <div className="grid items-center grid-cols-4 gap-4">
-                  <Label htmlFor="name" className="text-right">
-                    Name
-                  </Label>
-                  <Input id="name" name="name" placeholder="Mame" className="col-span-3" />
-                </div>
-              </div>
-              <DialogFooter>
-                <Button type="submit">Save changes</Button>
-              </DialogFooter>
-            </form>
-          </DialogContent>
-        </Dialog>
       </div>
-      <div className="flex-1 overflow-auto py-2">
-        <div className="flex flex-col h-full justify-end px-4">
-          <Groups rooms={rooms} setSelectedRoom={setSelectedRoom} />
-        </div>
+      <div className="flex-1 overflow-auto py-2 flex flex-col h-full justify-end px-4">
+        <Groups />
       </div>
+      <EditProfile isOpen={isOpen} setIsOpen={setIsOpen} handleEditProfile={handleEditProfile} />
     </div>
   );
 };

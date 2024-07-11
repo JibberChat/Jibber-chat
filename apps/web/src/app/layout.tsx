@@ -1,3 +1,4 @@
+import { ChatProvider } from "@/contexts/ChatContext";
 import { RoomsProvider } from "@/contexts/RoomsContext";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
@@ -30,9 +31,11 @@ export default function RootLayout({
     <ClerkProvider>
       <ApolloWrapper>
         <RoomsProvider>
-          <html lang="en">
-            <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
-          </html>
+          <ChatProvider>
+            <html lang="en">
+              <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
+            </html>
+          </ChatProvider>
         </RoomsProvider>
       </ApolloWrapper>
     </ClerkProvider>

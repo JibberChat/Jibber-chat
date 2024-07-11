@@ -64,7 +64,7 @@ export const RoomsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       refetchRooms: refetch,
       loading,
     };
-  }, []);
+  }, [data?.getUserRooms, createNewRoom, updateRoomById, leaveRoomById, refetch, loading]);
 
   return <RoomsContext.Provider value={value}>{children}</RoomsContext.Provider>;
 };

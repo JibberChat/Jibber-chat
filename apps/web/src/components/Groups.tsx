@@ -1,4 +1,5 @@
 import type { ChatRoom } from "@/__generated__/graphql";
+import { useChat } from "@/contexts/ChatContext";
 import { useRooms } from "@/contexts/RoomsContext";
 import { Plus } from "lucide-react";
 import { useState } from "react";
@@ -16,14 +17,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-interface GroupsProps {
-  rooms: ChatRoom[] | undefined;
-  // eslint-disable-next-line no-unused-vars
-  setSelectedRoom: (room: ChatRoom) => void;
-}
-
-export const Groups: React.FC<Readonly<GroupsProps>> = ({ rooms, setSelectedRoom }) => {
-  const { createNewRoom } = useRooms();
+export const Groups = () => {
+  const { setRoom } = useChat();
+  const { rooms, createNewRoom } = useRooms();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleCreateRoom = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -70,12 +66,7 @@ export const Groups: React.FC<Readonly<GroupsProps>> = ({ rooms, setSelectedRoom
       </div>
       <div className="flex flex-col gap-4 mt-4">
         {rooms?.map((room: ChatRoom) => (
-          <Button
-            key={room.id}
-            variant="outline"
-            className="w-full justify-start"
-            onClick={() => setSelectedRoom(room)}
-          >
+          <Button key={room.id} variant="outline" className="w-full justify-start" onClick={() => setRoom(room)}>
             {room.name}
           </Button>
         ))}

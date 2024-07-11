@@ -8,7 +8,7 @@ import { SignUp } from "./auth/SignUp";
 
 import { GET_ME } from "@/http/user";
 
-type AuthGuardProps<T extends object = {}> = {
+type AuthGuardProps<T extends object> = {
   render: React.FC<{ user: GetMeQuery["getMe"] } & T>;
   props?: T;
 };

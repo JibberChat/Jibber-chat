@@ -43,7 +43,7 @@ const splitLink = split(
   authLink.concat(httpLink)
 );
 
-let apolloClient: ApolloClient<any> | null = null;
+let apolloClient: ApolloClient<void> | null = null;
 
 export const getClient = () => {
   if (!apolloClient) {
