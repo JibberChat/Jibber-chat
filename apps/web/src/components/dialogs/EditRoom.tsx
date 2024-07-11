@@ -5,9 +5,7 @@ import { Label } from "../ui/label";
 
 interface EditRoomProps {
   isOpen: boolean;
-  // eslint-disable-next-line no-unused-vars
   setIsOpen: (open: boolean) => void;
-  // eslint-disable-next-line no-unused-vars
   handleEditRoom: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 

@@ -11,25 +11,7 @@ interface ChatProps {
 
 export const Chat: React.FC<Readonly<ChatProps>> = ({ user }) => {
   const { room, roomMessages, sendNewMessage } = useChat();
-  console.log(roomMessages);
-  // const { subscribeToMore, data } = useQuery(GET_ROOMMESSAGES, { variables: { roomId: room.id } });
-  // const [sendMessage] = useMutation(SEND_MESSAGE);
-
   if (!room) return null;
-
-  // useEffect(() => {
-  //   subscribeToMore({
-  //     document: ON_MESSAGE_ADDED,
-  //     variables: { roomId: room.id },
-  //     updateQuery: (prev, { subscriptionData }) => {
-  //       if (!subscriptionData.data) return prev;
-  //       const newMessage = subscriptionData.data.userJoinedRoom;
-  //       return {
-  //         getRoomMessages: [...prev.getRoomMessages, newMessage],
-  //       };
-  //     },
-  //   });
-  // }, [room.id, subscribeToMore]);
 
   return (
     <div className="flex flex-col overflow-hidden h-screen">

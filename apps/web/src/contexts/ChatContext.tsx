@@ -9,9 +9,7 @@ import { GET_ROOMMESSAGES, ON_MESSAGE_ADDED, SEND_MESSAGE } from "@/http/chat";
 interface ChatContextType {
   room: ChatRoom | undefined;
   roomMessages: ChatMessage[];
-  // eslint-disable-next-line no-unused-vars
   sendNewMessage: (message: string) => Promise<void>;
-  // eslint-disable-next-line no-unused-vars
   setRoom: (room: ChatRoom) => void;
   loadingMessage: boolean;
 }

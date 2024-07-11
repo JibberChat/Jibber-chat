@@ -34,7 +34,7 @@ export const ChatHeader = ({ room }: Readonly<ChatHeaderProps>) => {
   const handleEditRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const name = e.currentTarget.roomName?.value;
-    if (!name) return;
+    if (!name.trim()) return;
 
     await updateRoomById({ name, roomId: room.id });
 

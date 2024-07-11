@@ -4,7 +4,6 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 
 interface ChatInputProps {
-  // eslint-disable-next-line no-unused-vars
   sendMessage: (message: string) => void;
 }
 

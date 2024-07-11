@@ -8,11 +8,8 @@ import { CREATE_ROOM, GET_USERROOMS, LEAVE_ROOM, UPDATE_ROOM } from "@/http/room
 
 interface RoomsContextType {
   rooms: ChatRoom[] | undefined;
-  // eslint-disable-next-line no-unused-vars
   createNewRoom: (input: CreateRoomInput) => Promise<void>;
-  // eslint-disable-next-line no-unused-vars
   updateRoomById: (input: UpdateRoomInput) => Promise<void>;
-  // eslint-disable-next-line no-unused-vars
   leaveRoomById: (input: DeleteOrLeaveRoomInput) => Promise<void>;
   refetchRooms: () => void;
   loading: boolean;
