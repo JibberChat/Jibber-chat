@@ -7,7 +7,7 @@ import { createClient } from "graphql-ws";
 
 // URL de votre serveur GraphQL
 const httpLink = new HttpLink({
-  uri: "http://localhost:4000/graphql",
+  uri: `http://${process.env.NEXT_PUBLIC_API_URL}/graphql`,
   credentials: "include", // Pour inclure les cookies avec les requêtes
 });
 
@@ -24,7 +24,7 @@ const authLink = setContext((_, { headers }) => {
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: "ws://localhost:4000/subscriptions",
+    url: `ws://${process.env.NEXT_PUBLIC_API_URL}/subscriptions`,
     on: {
       connected: () => console.log("WebSocket connected"),
       error: (error) => console.error("WebSocket error", error),
