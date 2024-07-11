@@ -56,7 +56,6 @@ export const ChatHeader = ({ room }: Readonly<ChatHeaderProps>) => {
       },
     })
       .then(({ data }) => {
-        console.log(data?.inviteUserToRoom);
         if (data?.inviteUserToRoom) {
           toast.success("User invited successfully");
         } else {

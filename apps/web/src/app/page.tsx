@@ -3,7 +3,7 @@
 import type { GetMeQuery } from "@/__generated__/graphql";
 import { useChat } from "@/contexts/ChatContext";
 
-import { AuthGuard } from "@/components/AuthGuard";
+import AuthGuard from "@/components/AuthGuard";
 import { Chat } from "@/components/Chat";
 import { Sidebar } from "@/components/Sidebar";
 
@@ -18,7 +18,7 @@ function Home({ user }: Readonly<{ user: GetMeQuery["getMe"] }>) {
   );
 }
 
-const AuthorizationHome = () => {
+const AuthorizationHome: React.FC = () => {
   return <AuthGuard render={Home} />;
 };
 

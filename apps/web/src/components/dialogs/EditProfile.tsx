@@ -9,7 +9,7 @@ interface EditProfileProps {
   handleEditProfile: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-export default function EditProfile({ isOpen, setIsOpen, handleEditProfile }: Readonly<EditProfileProps>) {
+const EditProfile: React.FC<Readonly<EditProfileProps>> = ({ isOpen, setIsOpen, handleEditProfile }) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-[425px]">
@@ -33,4 +33,6 @@ export default function EditProfile({ isOpen, setIsOpen, handleEditProfile }: Re
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default EditProfile;

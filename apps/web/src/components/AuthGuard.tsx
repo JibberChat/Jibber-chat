@@ -8,19 +8,22 @@ import { SignUp } from "./auth/SignUp";
 
 import { GET_ME } from "@/http/user";
 
+// Define the type for props that AuthGuard accepts
 type AuthGuardProps<T extends object> = {
-  render: React.FC<{ user: GetMeQuery["getMe"] } & T>;
-  props?: T;
+  render: React.FC<{ user: GetMeQuery["getMe"] } & T>; // The render prop accepts user and additional props T
+  props?: T; // Optional props of type T
 };
 
-export const AuthGuard = <T extends object>({ render: InnerComponent, props }: Readonly<AuthGuardProps<T>>) => {
-  const { data: me, loading } = useQuery(GET_ME);
+// Component definition for AuthGuard
+const AuthGuard = <T extends object>({ render: InnerComponent, props }: AuthGuardProps<T>): JSX.Element => {
+  const { data: me, loading } = useQuery<GetMeQuery>(GET_ME); // Use useQuery with GetMeQuery type
 
   const [showSignUp, setShowSignUp] = useState(false);
 
-  if (loading) return null;
+  if (loading) return <div>Loading...</div>; // Return loading indicator while fetching data
 
-  if (!me) {
+  // If user is not authenticated (me is falsy or me.getMe is falsy)
+  if (!me?.getMe) {
     return (
       <div className="w-full h-screen overflow-hidden lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
         <div className="flex items-center justify-center py-12">
@@ -45,5 +48,8 @@ export const AuthGuard = <T extends object>({ render: InnerComponent, props }: R
     );
   }
 
+  // If user is authenticated, render InnerComponent with user and props
   return <InnerComponent user={me.getMe} {...(props as T)} />;
 };
+
+export default AuthGuard;

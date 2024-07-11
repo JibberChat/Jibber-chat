@@ -4,6 +4,6 @@ import { ApolloNextAppProvider } from "@apollo/experimental-nextjs-app-support";
 
 import { getClient } from "@/http/client/apollo-client";
 
-export function ApolloWrapper({ children }: Readonly<React.PropsWithChildren>) {
+export const ApolloWrapper: React.FC<Readonly<React.PropsWithChildren>> = ({ children }) => {
   return <ApolloNextAppProvider makeClient={getClient}>{children}</ApolloNextAppProvider>;
-}
+};

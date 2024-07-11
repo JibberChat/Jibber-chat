@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export const Groups = () => {
+export const Groups: React.FC = () => {
   const { setRoom } = useChat();
   const { rooms, createNewRoom } = useRooms();
   const [isOpen, setIsOpen] = useState(false);

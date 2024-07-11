@@ -9,7 +9,7 @@ interface EditRoomProps {
   handleInviteUser: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-export default function EditRoom({ isOpen, setIsOpen, handleInviteUser }: Readonly<EditRoomProps>) {
+const EditRoom: React.FC<Readonly<EditRoomProps>> = ({ isOpen, setIsOpen, handleInviteUser }) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-[425px]">
@@ -33,4 +33,6 @@ export default function EditRoom({ isOpen, setIsOpen, handleInviteUser }: Readon
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default EditRoom;
