@@ -8,6 +8,8 @@ import "./globals.css";
 
 import { ApolloWrapper } from "@/http/client/apollo-wrapper";
 
+import { Toaster } from "@/components/ui/sonner";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -33,7 +35,10 @@ export default function RootLayout({
         <RoomsProvider>
           <ChatProvider>
             <html lang="en">
-              <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
+              <body className={`${geistSans.variable} ${geistMono.variable}`}>
+                {children}
+                <Toaster />
+              </body>
             </html>
           </ChatProvider>
         </RoomsProvider>

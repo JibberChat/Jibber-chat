@@ -3,6 +3,7 @@ import { useRooms } from "@/contexts/RoomsContext";
 import { useMutation } from "@apollo/client";
 import { DoorOpen, Edit, Plus } from "lucide-react";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
 import EditRoom from "../dialogs/EditRoom";
 import InviteUserToRoom from "../dialogs/InviteUserToRoom";
@@ -45,8 +46,6 @@ export const ChatHeader = ({ room }: Readonly<ChatHeaderProps>) => {
     e.preventDefault();
     const userEmail = e.currentTarget.userEmail.value;
     if (!userEmail.trim()) return;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(userEmail)) return;
 
     inviteUserToRoom({
       variables: {
@@ -55,9 +54,19 @@ export const ChatHeader = ({ room }: Readonly<ChatHeaderProps>) => {
           userEmail,
         },
       },
-    }).then(() => {
-      setIsOpenInviteUser(false);
-    });
+    })
+      .then(({ data }) => {
+        console.log(data?.inviteUserToRoom);
+        if (data?.inviteUserToRoom) {
+          toast.success("User invited successfully");
+        } else {
+          toast.error("User not found");
+        }
+        setIsOpenInviteUser(false);
+      })
+      .catch(() => {
+        toast.error("An error occurred");
+      });
   };
 
   return (

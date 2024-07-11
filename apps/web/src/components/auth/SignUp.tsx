@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { CREATE_USER } from "@/http/user";
 
-import { isSignError } from "@/lib/auth";
+import { isGraphqlError } from "@/lib/error";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -59,7 +59,7 @@ export const SignUp: React.FC<Readonly<SignInProps>> = ({ setShowSignUp }: { set
       }
     } catch (err) {
       setLoadingCode(false);
-      if (isSignError(err)) {
+      if (isGraphqlError(err)) {
         setError(err.errors?.[0]?.message || "An unknown error occurred");
       } else {
         setError("An error occurred while sending the verification code");
@@ -87,7 +87,7 @@ export const SignUp: React.FC<Readonly<SignInProps>> = ({ setShowSignUp }: { set
       setVerificationInProgress(true);
     } catch (err: unknown) {
       console.error("Error sending verification code", err);
-      if (isSignError(err)) {
+      if (isGraphqlError(err)) {
         setError(err.errors?.[0]?.message || "An unknown error occurred");
       } else {
         setError("An error occurred while sending the verification code");
