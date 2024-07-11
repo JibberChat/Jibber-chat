@@ -62,7 +62,7 @@ export const Sidebar: React.FC<Readonly<SidebarProps>> = ({ user }) => {
                 Edit Profile
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => signOut()}>
+              <DropdownMenuItem onClick={() => signOut().then(() => window.location.reload())}>
                 <LogOut className="mr-2" />
                 Sign out
               </DropdownMenuItem>
