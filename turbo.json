@@ -8,6 +8,7 @@
       "dependsOn": [
         "^build"
       ],
+      "env": ["NEXT_PUBLIC_API_URL"],
       "outputs": [
         ".next/**",
         "!.next/cache/**"
